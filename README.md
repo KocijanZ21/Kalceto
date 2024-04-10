@@ -1,7 +1,5 @@
 # Kalceto
 
-Aplikacija je namenjena igralcem namiznega nogometa, ki bi tem olajšala prijavo na turnirje, pregled nad ostalimi udeleženci turnirja in nadaljnim potekom tekmovanj.
-
-Zaposleni (organizatorji, sodniki, napovedovalci, oskrbovalci) imajo nad vsakim turnirjem splošen pregled, tekmovalci pa imajo sicer vpogled v vse, vendar lahko vpisujejo le izide svojih tekem. Tekmovalci se pomerijo ena-na-ena in zmagovalec gre v naslednji krog, kjer mu program dodeli novega nasprotnika.
+Aplikacija je namenjena predvsem igralcem namiznega nogometa. Uporabnik se mora na začetku registrirati, kot igralec ali kot zaposleni. Igralec se potem lahko prijavi na prihajajoči turnir. Ko se zapolni maksimalno število mest, se naredi naključni izbor dvojic. V aplikaciji bo lahko uporabnik nato pogledal kdaj in kje bo potekala tekma, na kateri mizi bo igral, kdo bo sodnik ter kdo je njegov nasprotnik. Poleg tega bo igralec po koncu tekme moral vpisati izid. Izmed zmagovalcev prvega kroga bo program naredil nove dvojice.
 
 ![alt text](https://github.com/KocijanZ21/Kalceto/blob/main/Diagram.drawio.png?raw=true)
