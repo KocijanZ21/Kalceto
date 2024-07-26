@@ -22,7 +22,7 @@ CREATE TABLE oseba (
     priimek TEXT NOT NULL,
     telefon TEXT NOT NULL,
     email TEXT NOT NULL,
-     username TEXT NOT NULL,
+    username TEXT NOT NULL,
     geslo TEXT NOT NULL UNIQUE
 );
 
