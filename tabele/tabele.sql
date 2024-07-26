@@ -45,8 +45,8 @@ CREATE TABLE turnir(
 
 CREATE TABLE tekma (
     id_tekme SERIAL PRIMARY KEY,
-    cas TIMESTAMP NOT NULL,
-    miza INTEGER NOT NULL,
+    cas TIMESTAMP NOT NULL ,
+    miza INTEGER NOT NULL ,
     izid INTEGER NOT NULL,
     ime_turnirja INTEGER NOT NULL REFERENCES turnir(id_turnirja),
     sodnik TEXT NOT NULL REFERENCES sodnik(emso),
