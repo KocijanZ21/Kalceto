@@ -10,10 +10,11 @@ GRANT USAGE ON SCHEMA public to javnost;
 
 DROP TABLE IF EXISTS oseba;
 DROP TABLE IF EXISTS igralec;
-DROP TABLE IF EXISTS zaposlen;
 DROP TABLE IF EXISTS sodnik;
 DROP TABLE IF EXISTS turnir;
 DROP TABLE IF EXISTS tekma;
+
+DROP TABLE IF EXISTS zaposlen;
 
 CREATE TABLE oseba (
     emso TEXT PRIMARY KEY,
@@ -31,12 +32,6 @@ CREATE TABLE igralec (
     rojstni_dan DATE NOT NULL DEFAULT now(),
     emso TEXT NOT NULL REFERENCES oseba(emso) PRIMARY KEY
 );
-
-CREATE TABLE zaposlen (
-    emso TEXT NOT NULL REFERENCES oseba(emso) PRIMARY KEY,
-    delovno_mesto TEXT NOT NULL
-);
-
 CREATE TABLE sodnik (
     emso TEXT NOT NULL REFERENCES oseba(emso) PRIMARY KEY
 );
