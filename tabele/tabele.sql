@@ -45,9 +45,14 @@ CREATE TABLE turnir(
 
 CREATE TABLE tekma (
     id_tekme SERIAL PRIMARY KEY,
-    cas INTEGER NOT NULL,
+    cas TIMESTAMP NOT NULL,
     miza INTEGER NOT NULL,
-    izid INTEGER NOT NULL
+    izid INTEGER NOT NULL,
+    ime_turnirja INTEGER NOT NULL REFERENCES turnir(id_turnirja),
+    sodnik TEXT NOT NULL REFERENCES sodnik(emso),
+    igralec1 TEXT NOT NULL REFERENCES igralec(emso),
+    igralec2 TEXT NOT NULL REFERENCES igralec(emso),
+    CHECK (igralec1 <> igralec2)
 );
 
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
