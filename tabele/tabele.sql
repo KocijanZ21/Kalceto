@@ -8,39 +8,33 @@ GRANT ALL ON SCHEMA public TO zivak;
 GRANT CONNECT ON DATABASE sem2024_vanjak TO javnost;
 GRANT USAGE ON SCHEMA public to javnost;
 
-DROP TABLE IF EXISTS oseba;
+DROP TABLE IF EXISTS uporabniki;
 DROP TABLE IF EXISTS igralec;
 DROP TABLE IF EXISTS sodnik;
 DROP TABLE IF EXISTS turnir;
 DROP TABLE IF EXISTS tekma;
 
-DROP TABLE IF EXISTS zaposlen;
-
-CREATE TABLE oseba (
+CREATE TABLE igralec (
     emso TEXT PRIMARY KEY,
     ime TEXT NOT NULL,
     priimek TEXT NOT NULL,
-    telefon TEXT NOT NULL,
-    email TEXT NOT NULL,
-    username TEXT NOT NULL,
-    geslo TEXT NOT NULL UNIQUE
-);
-
-CREATE TABLE igralec (
     spol TEXT NOT NULL,
     drzava TEXT NOT NULL,
-    rojstni_dan DATE NOT NULL DEFAULT now(),
-    emso TEXT NOT NULL REFERENCES oseba(emso) PRIMARY KEY
+    email TEXT NOT NULL,
+    rojstni_dan DATE NOT NULL DEFAULT now()
 );
 CREATE TABLE sodnik (
-    emso TEXT NOT NULL REFERENCES oseba(emso) PRIMARY KEY
+    emso TEXT PRIMARY KEY,
+    ime TEXT NOT NULL,
+    priimek TEXT NOT NULL
 );
 
 CREATE TABLE turnir(
     id_turnirja SERIAL PRIMARY KEY,
     kraj TEXT NOT NULL,
     datum_pricetka DATE NOT NULL,
-    st_mest INTEGER NOT NULL
+    st_mest INTEGER NOT NULL,
+    zmagovalec TEXT NOT NULL
 );
 
 CREATE TABLE tekma (
@@ -48,11 +42,18 @@ CREATE TABLE tekma (
     cas TIMESTAMP NOT NULL ,
     miza INTEGER NOT NULL ,
     izid INTEGER NOT NULL,
-    ime_turnirja INTEGER NOT NULL REFERENCES turnir(id_turnirja),
-    sodnik TEXT NOT NULL REFERENCES sodnik(emso),
+    sodnik_tekme TEXT NOT NULL REFERENCES sodnik(emso),
     igralec1 TEXT NOT NULL REFERENCES igralec(emso),
     igralec2 TEXT NOT NULL REFERENCES igralec(emso),
     CHECK (igralec1 <> igralec2)
+);
+create table uporabniki (
+    username TEXT PRIMARY KEY,
+    role TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    last_login TEXT NOT NULL,
+    ime TEXT NOT NULL,
+    priimek TEXT NOT NULL
 );
 
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
