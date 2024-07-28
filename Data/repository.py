@@ -33,24 +33,24 @@ class Repo:
 
     def dodaj_turnir(self, t : turnir):
         self.cur.execute("""
-            INSERT into turnir(kraj, datum_pricetka, st_mest, zmagovalec)
-            VALUES(%s, %s, %s, %s)
-        """, (t.kraj, t.datum_pricetka, t.st_mest, t.zmagovalec))
+            INSERT into turnir(id_turnirja, kraj, datum_pricetka, st_mest, zmagovalec)
+            VALUES(%s, %s, %s, %s, %s)
+        """, (t.id_turnirja,t.kraj, t.datum_pricetka, t.st_mest, t.zmagovalec))
         self.conn.commit()
      
     def odstrani_turnir(self, id_turnirja : str):
         self.cur.execute("""
             DELETE from turnir
             WHERE id_turnirja = %s
-        """, (id_turnirja))
+        """, (id_turnirja,))
         self.conn.commit()
     
   
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
-            INSERT into uporabniki(username, role, password_hash, last_login, ime, priimek)
+            INSERT into uporabniki(username, role, password_hash, last_login, oseba)
             VALUES (%s, %s, %s, %s, %s, %s)
-            """, (uporabnik.username,uporabnik.role, uporabnik.password_hash, uporabnik.last_login, uporabnik.ime, uporabnik.priimek))
+            """, (uporabnik.username,uporabnik.role, uporabnik.password_hash, uporabnik.last_login, uporabnik.oseba))
         self.conn.commit()
 
 
