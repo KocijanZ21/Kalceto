@@ -30,7 +30,7 @@ CREATE TABLE sodnik (
 );
 
 CREATE TABLE turnir(
-    id_turnirja SERIAL PRIMARY KEY,
+    id_turnirja TEXT PRIMARY KEY,
     kraj TEXT NOT NULL,
     datum_pricetka DATE NOT NULL,
     st_mest INTEGER NOT NULL,
@@ -42,6 +42,7 @@ CREATE TABLE tekma (
     cas TIMESTAMP NOT NULL ,
     miza INTEGER NOT NULL ,
     izid INTEGER NOT NULL,
+    ime_turnirja INTEGER NOT NULL,
     sodnik_tekme TEXT NOT NULL REFERENCES sodnik(emso),
     igralec1 TEXT NOT NULL REFERENCES igralec(emso),
     igralec2 TEXT NOT NULL REFERENCES igralec(emso),
@@ -52,8 +53,7 @@ create table uporabniki (
     role TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     last_login TEXT NOT NULL,
-    ime TEXT NOT NULL,
-    priimek TEXT NOT NULL
+    oseba TEXT NOT NULL
 );
 
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
