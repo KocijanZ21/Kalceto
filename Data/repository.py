@@ -6,10 +6,10 @@ import os
 import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 from typing import List
-import Data.auth_public as auth
+import auth_public as auth
 #import Data.auth_public as auth
 
-from Data.models import igralec, sodnik, turnir, tekma, Uporabnik
+from models import igralec, sodnik, turnir, tekma, Uporabnik
 
 
 # Preberemo port za bazo iz okoljskih spremenljivk
