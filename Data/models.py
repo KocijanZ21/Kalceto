@@ -74,3 +74,4 @@ class Uporabnik:
 class UporabnikDto:
     username: str = field(default="")
     role: str = field(default="")
+    oseba: str = field(default="")
