@@ -6,10 +6,10 @@ import os
 import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 from typing import List
-import auth_public as auth
-#import Data.auth_public as auth
+#import auth_public as auth
+import Data.auth_public as auth
 
-from models import igralec, sodnik, turnir, tekma, Uporabnik
+from Data.models import igralec, sodnik, turnir, tekma, Uporabnik
 
 
 # Preberemo port za bazo iz okoljskih spremenljivk
@@ -49,7 +49,7 @@ class Repo:
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
             INSERT into uporabniki(username, role, password_hash, last_login, oseba)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s)
             """, (uporabnik.username,uporabnik.role, uporabnik.password_hash, uporabnik.last_login, uporabnik.oseba))
         self.conn.commit()
 

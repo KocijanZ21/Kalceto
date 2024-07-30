@@ -1,0 +1,19 @@
+%rebase('osnova.html', naslov='Prijava', stran='prijava')
+<form action="{{url('dodaj_uporabnika')}}" method="post">
+    <div class="group"> 
+        <label for="username">uporabniško ime:</label>
+        <input type="text" name="username" placeholder="vnesi uporabniško ime"/>
+    </div>
+    <div class="group"> 
+        <label for="password">geslo:</label>
+        <input type="password" name="password" placeholder="vnesi geslo"/>
+    </div>
+    <div class="group">
+        <label for="role">vloga:</label>
+        <select name="role">
+            <option value="igralec" >igralec</option>
+            <option value="sodnik" >sodnik</option>
+         </select>
+    </div>
+    <button type="submit">prijavi se</button>
+</form>
