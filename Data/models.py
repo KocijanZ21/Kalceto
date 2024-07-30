@@ -30,7 +30,7 @@ class igralecDto:
     drzava : str = field(default="")
     email : str = field(default="")
     rojstni_dan : str = field(default="")
-    izid : int = field(default=0)
+    izid : str = field(default=0)
 
 @dataclass_json
 @dataclass
@@ -54,7 +54,7 @@ class tekma:
     id_tekme : int = field(default=0)
     cas : str=field(default="")
     miza : int = field(default=0)
-    izid : int = field(default=0)
+    izid : str = field(default=0)
     ime_turnirja : str = field(default=0)
     sodnik_tekme : str=field(default="")
     igralec1 : str=field(default="")

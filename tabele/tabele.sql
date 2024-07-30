@@ -41,7 +41,7 @@ CREATE TABLE tekma (
     id_tekme SERIAL PRIMARY KEY,
     cas TIMESTAMP NOT NULL ,
     miza INTEGER NOT NULL ,
-    izid INTEGER NOT NULL,
+    izid TEXT NOT NULL,
     ime_turnirja INTEGER NOT NULL,
     sodnik_tekme TEXT NOT NULL REFERENCES sodnik(emso),
     igralec1 TEXT NOT NULL REFERENCES igralec(emso),
