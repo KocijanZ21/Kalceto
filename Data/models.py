@@ -38,6 +38,10 @@ class sodnik:
     emso : str = field(default="")  
     ime : str = field(default="")
     priimek : str = field(default="")
+    spol : str = field(default="")
+    drzava : str = field(default="")
+    email : str = field(default="")
+    rojstni_dan : str = field(default="")
    
 @dataclass_json
 @dataclass

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALČETO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://images.pexels.com/photos/595229/pexels-photo-595229.jpeg') no-repeat center center fixed; /* Nastavitev slike ozadja */
+            background-size: cover; /* Pokriva celotno ozadje */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Dovoli absolutno pozicioniranje otrok */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9); /* Bele barve s transparentnostjo za ozadje kvadrata */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 400px; /* Širina kvadrata */
+            height: 200px; /* Višina kvadrata */
+            box-sizing: border-box; /* Vključuje padding in border v širino in višino */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        .title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 8em;
+            color: white; /* črna barva za naslov */
+            position: absolute; /* Absolutno pozicioniranje */
+            top: 20px; /* Razmik od vrha */
+            left: 20px; /* Razmik od leve strani */
+            margin: 0;
+        }
+        .button-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .button {
+            display: block;
+            padding: 15px;
+            margin: 10px auto;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1.2em;
+            text-decoration: none;
+            text-align: center;
+            width: 80%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .register-button {
+            background-color: #1f1e1e; /* temno siva barva za gumb za registracijo */
+        }
+        .login-button {
+            background-color: #545252; /* svetlo siva barva za gumb za prijavo */
+            color: white;
+        }
+        .button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">KALČETO</div>
+        
+        <div class="button-box">
+            <a href="/registracija" class="button register-button">Registracija</a>
+            <a href="/prijava" class="button login-button">Prijava</a>
+        </div>
+    </div>
+</body>
+</html>
+

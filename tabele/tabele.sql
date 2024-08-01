@@ -27,7 +27,11 @@ CREATE TABLE igralec (
 CREATE TABLE sodnik (
     emso TEXT PRIMARY KEY,
     ime TEXT NOT NULL,
-    priimek TEXT NOT NULL
+    priimek TEXT NOT NULL,
+    spol TEXT NOT NULL,
+    drzava TEXT NOT NULL,
+    email TEXT NOT NULL,
+    rojstni_dan DATE NOT NULL DEFAULT now()
 );
 
 CREATE TABLE turnir(
@@ -43,7 +47,7 @@ CREATE TABLE tekma (
     cas TIMESTAMP NOT NULL ,
     miza INTEGER NOT NULL ,
     izid TEXT NOT NULL,
-    ime_turnirja INTEGER NOT NULL,
+    ime_turnirja TEXT NOT NULL REFERENCES turnir(id_turnirja),
     sodnik_tekme TEXT NOT NULL REFERENCES sodnik(emso),
     igralec1 TEXT NOT NULL REFERENCES igralec(emso),
     igralec2 TEXT NOT NULL REFERENCES igralec(emso),

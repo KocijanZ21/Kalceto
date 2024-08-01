@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prijava</title>
+    <style>
+        body {
+            background-color: #1f1e1e; /* Svetlo sivo ozadje */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .form-container {
+            background-color: #545252; /* Belo ozadje za obrazec */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Rahla senca za obrazec */
+            width: 100%;
+            max-width: 400px; /* Širina obrazca */
+        }
+        h2 {
+            text-align: center;
+            color: white; /* Temno siva barva za naslov */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+        label {
+            margin-bottom: 5px;
+            color: white; /* Temno siva barva za besedilo */
+        }
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            border: 1px solid #CCCCCC; /* Svetlo siva barva za robove */
+            border-radius: 5px;
+            font-size: 1em;
+            width: calc(100% - 22px); /* Uporede širina z robovi */
+        }
+        input[type="submit"] {
+            background-color: #4CAF50; /* Zelen gumb */
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Temnejša zelena ob premiku miške */
+        }
+        p {
+            color: red; /* Rdeče za napake */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Prijava</h2>
+        % if error:
+            <p>{{error}}</p>
+        % end
+        <form action="/prijava" method="post">
+            <div class="form-group">
+                <label for="username">Uporabniško ime:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Geslo:</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <input type="submit" value="Prijava">
+        </form>
+    </div>
+</body>
+</html>

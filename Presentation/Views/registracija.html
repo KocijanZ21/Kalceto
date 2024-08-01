@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registracija</title>
+    <style>
+        body {
+            background-color: #1f1e1e; /* Svetlo sivo ozadje */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .form-container {
+            background-color: #545252; /* Belo ozadje za obrazec */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Rahla senca za obrazec */
+            width: 100%;
+            max-width: 600px;
+        }
+        h2 {
+            text-align: center;
+            color: white; /* Temno siva barva za naslov */
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 48%; /* Polovična širina za dva stolpca */
+            margin-bottom: 15px;
+        }
+        label {
+            margin-top: 10px;
+            color: white; /* Temno siva barva za besedilo */
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="password"],
+        select {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #CCCCCC; /* Svetlo siva barva za robove */
+            border-radius: 5px;
+            font-size: 1em;
+            width: calc(100% - 22px);
+        }
+        input[type="submit"] {
+            background-color: #4CAF50; /* Zelen gumb */
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Temnejša zelena ob premiku miške */
+        }
+        p {
+            color: red; /* Rdeče za napake */
+            text-align: center;
+        }
+        .full-width {
+            width: 100%; /* Širina 100% za elemente, ki morajo biti čez celotno širino */
+        }  
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registracija</h2>
+        % if error:
+            <p>{{error}}</p>
+        % end
+        <form action="/registracija" method="post">
+            <div class="form-group">
+                <label for="emso">EMŠO:</label>
+                <input type="text" id="emso" name="emso">
+            </div>
+            <div class="form-group">
+                <label for="ime">Ime:</label>
+                <input type="text" id="ime" name="ime">
+            </div>
+            <div class="form-group">
+                <label for="priimek">Priimek:</label>
+                <input type="text" id="priimek" name="priimek">
+            </div>
+            <div class="form-group">
+                <label for="spol">Spol:</label>
+                <input type="text" id="spol" name="spol">
+            </div>
+            <div class="form-group">
+                <label for="drzava">Država:</label>
+                <input type="text" id="drzava" name="drzava">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="rojstni_dan">Rojstni dan:</label>
+                <input type="date" id="rojstni_dan" name="rojstni_dan">
+            </div>
+            <div class="form-group">
+                <label for="username">Uporabniško ime:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div class="form-group full-width">
+                <label for="password">Geslo:</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="form-group full-width">
+                <label for="role">Vloga:</label>
+                <select id="role" name="role">
+                    <option value="">Izberi vlogo</option>
+                    <option value="igralec">Igralec</option>
+                    <option value="sodnik">Sodnik</option>
+                </select>
+            </div>
+            <input type="submit" value="Registracija">
+        </form>
+    </div>
+</body>
+</html>

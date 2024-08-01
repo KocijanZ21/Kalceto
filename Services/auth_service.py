@@ -17,6 +17,10 @@ class AuthService:
         except:
             return False
         
+    def posodobi_vlogo(self, uporabnik: str, vloga: str):
+        self.repo.posodobi_vlogo(uporabnik, vloga)
+       
+
     def prijavi_uporabnika(self, uporabnik : str, geslo: str) -> UporabnikDto | bool :
 
         # Najprej dobimo uporabnika iz baze
@@ -84,11 +88,15 @@ class AuthService:
     def odstrani_igralca(self, emso: str):
         self.repo.odstrani_igralca(emso)
 
-    def dodaj_sodnika(self, emso: str, ime: str, priimek: str) -> sodnik:
+    def dodaj_sodnika(self, emso: str, ime: str, priimek: str, spol: str, drzava: str, email: str, rojstni_dan: str) -> sodnik:
         s = sodnik(
-            emso=emso,
-            ime=ime,
-            priimek=priimek
+            emso = emso,
+            ime = ime,
+            priimek=priimek,
+            spol=spol,
+            drzava=drzava,
+            email=email,
+            rojstni_dan=rojstni_dan
         )
         try:
            self.repo.dodaj_sodnika(s)

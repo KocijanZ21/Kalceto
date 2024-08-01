@@ -64,6 +64,12 @@ class Repo:
         u = Uporabnik.from_dict(self.cur.fetchone())
         return u
     
+    def posodobi_vlogo(self, uporabnik: str, vloga: str):
+        self.cur.execute("""
+            Update uporabniki set role = %s where username = %s
+            """, (vloga, uporabnik))
+        self.conn.commit()  
+    
     def posodobi_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
             Update uporabniki set last_login = %s where username = %s
@@ -96,7 +102,7 @@ class Repo:
 
     def dobi_sodnika(self, emso : str) -> sodnik:
         self.cur.execute("""
-            SELECT emso, ime FROM sodnik
+            SELECT emso, ime, priimek, spol, drzava, email, rojstni_dan FROM sodnik
             WHERE emso = %s
         """, (emso,))
 
@@ -105,9 +111,9 @@ class Repo:
     
     def dodaj_sodnika(self, s : sodnik):
         self.cur.execute("""
-            INSERT into sodnik(emso, ime, priimek)
-            VALUES(%s, %s, %s)
-        """, (s.emso, s.ime, s.priimek))
+            INSERT into sodnik(emso, ime, priimek, spol, drzava, email, rojstni_dan)
+            VALUES(%s, %s, %s, %s, %s, %s, %s)
+        """, (s.emso, s.ime, s.priimek, s.spol, s.drzava, s.email, s.rojstni_dan))
         self.conn.commit()
         
     def odstrani_sodnika(self, emso : str):
