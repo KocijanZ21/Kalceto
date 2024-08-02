@@ -24,7 +24,7 @@ class Repo:
 
     def dobi_turnir(self) -> List[turnir]:
         self.cur.execute(""" 
-            SELECT id_turnirja, kraj, datum_pricetka, st_mest, zmagovalec 
+            SELECT id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec 
             FROM turnir
             Order by cas desc
         """)
@@ -33,9 +33,9 @@ class Repo:
 
     def dodaj_turnir(self, t : turnir):
         self.cur.execute("""
-            INSERT into turnir(id_turnirja, kraj, datum_pricetka, st_mest, zmagovalec)
-            VALUES(%s, %s, %s, %s, %s)
-        """, (t.id_turnirja,t.kraj, t.datum_pricetka, t.st_mest, t.zmagovalec))
+            INSERT into turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec)
+            VALUES(%s, %s, %s, %s, %s, %s)
+        """, (t.id_turnirja,t.kraj, t.datum_pricetka,t.datum_konca_prijav, t.st_mest, t.zmagovalec))
         self.conn.commit()
      
     def odstrani_turnir(self, id_turnirja : str):

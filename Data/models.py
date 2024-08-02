@@ -49,6 +49,7 @@ class turnir:
     id_turnirja : str = field(default="")
     kraj : str = field(default="")
     datum_pricetka : date=field(default=date.today())
+    datum_konca_prijav : date=field(default=date.today())
     st_mest : int = field(default=0)
     zmagovalec : str = field(default="")
 
