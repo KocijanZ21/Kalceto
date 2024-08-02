@@ -56,7 +56,7 @@ def registracija_post():
     username = request.forms.get('username').encode('latin1').decode('utf-8')
     password = request.forms.get('password')
     role = request.forms.get('role')
-    emso = request.forms.get('emso')
+    #emso = request.forms.get('emso')
 
     # Preveri, če uporabniško ime že obstaja
     if auth.obstaja_uporabnik(username):
@@ -78,15 +78,16 @@ def prijava():
 
 @post('/prijava')
 def prijava_post():
-    username = request.forms.get('username')
+    username = request.forms.get('username').encode('latin1').decode('utf-8')
     password = request.forms.get('password')
 
     if not auth.obstaja_uporabnik(username):
             return template("prijava_up.html", error="Uporabnik s tem imenom ne obstaja. Potrebna je registracija.")
-
+    
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
         response.set_cookie("uporabnik", username)
+        response.set_cookie("vloga", prijava.role)
         # redirect v večino primerov izgleda ne deluje
         redirect(url('/domov'))
 
@@ -95,7 +96,8 @@ def prijava_post():
 
 @get('/domov')
 def domov():
-    uporabnik = request.get_cookie("uporabnik")
+    uporabnik = request.get_cookie("uporabnik").encode('latin1').decode('utf-8')
+    vloga = request.get_cookie("vloga")
     podatki = auth.dobi_uporabnika(uporabnik)
     emso = podatki.emso
     ime = podatki.ime
@@ -104,8 +106,9 @@ def domov():
     drzava = podatki.drzava
     email = podatki.email
     rojstni_dan = podatki.rojstni_dan
+    
 
-    return template('domov.html', uporabnik = uporabnik, emso = emso, ime = ime, priimek = priimek, spol = spol, drzava = drzava, email = email, rojstni_dan = rojstni_dan)
+    return template('domov.html', uporabnik = uporabnik, vloga = vloga, emso = emso, ime = ime, priimek = priimek, spol = spol, drzava = drzava, email = email, rojstni_dan = rojstni_dan)
 
 @get('/prijava_na_turnir')
 def prijava_na_turnir():
