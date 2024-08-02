@@ -9,7 +9,7 @@ from typing import List
 #import auth_public as auth
 import Data.auth_public as auth
 
-from Data.models import igralec, sodnik, turnir, tekma, Uporabnik
+from Data.models import igralec, sodnik, turnir, prijave_turnir, tekma, Uporabnik
 
 
 # Preberemo port za bazo iz okoljskih spremenljivk
@@ -45,6 +45,28 @@ class Repo:
         """, (id_turnirja,))
         self.conn.commit()
     
+    def dobi_prijave_turnir(self, kateri_turnir: str) -> prijave_turnir:
+        self.cur.execute(""" 
+            SELECT kateri_turnir, up_ime
+            FROM prijave_turnir
+            WHERE kateri_turnir = %s
+        """,(kateri_turnir,))
+        pri = prijave_turnir.from_dict(self.cur.fetchall())
+        return pri
+    
+    def dodaj_prijavo_turnir(self, p : prijave_turnir):
+        self.cur.execute("""
+            INSERT into prijave_turnir(kateri_turnir, up_ime)
+            VALUES(%s, %s)
+        """, (p.kateri_turnir, p.up_ime))
+        self.conn.commit()
+
+    def odstrani_prijavo_turnir(self, up_ime : str):
+        self.cur.execute("""
+            DELETE from prijave_turnir
+            WHERE up_ime = %s
+        """, (up_ime,))
+        self.conn.commit()
   
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""

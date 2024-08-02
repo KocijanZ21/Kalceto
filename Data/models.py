@@ -54,6 +54,12 @@ class turnir:
 
 @dataclass_json
 @dataclass
+class prijave_turnir:    
+    kateri_turnir : str = field(default="")
+    up_ime : str = field(default="")
+   
+@dataclass_json
+@dataclass
 class tekma:    
     id_tekme : int = field(default=0)
     cas : str=field(default="")

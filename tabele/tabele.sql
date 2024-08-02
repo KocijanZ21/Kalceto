@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS igralec;
 DROP TABLE IF EXISTS sodnik;
 DROP TABLE IF EXISTS turnir;
 DROP TABLE IF EXISTS tekma;
-DROP TABLE IF EXISTS uporabnik;
+
 
 CREATE TABLE igralec (
     emso TEXT PRIMARY KEY,
@@ -42,6 +42,11 @@ CREATE TABLE turnir(
     zmagovalec TEXT NOT NULL
 );
 
+CREATE TABLE prijave_turnir(
+    kateri_turnir TEXT NOT NULL REFERENCES turnir(id_turnirja),
+    up_ime TEXT NOT NULL REFERENCES uporabniki(username)
+)
+
 CREATE TABLE tekma (
     id_tekme SERIAL PRIMARY KEY,
     cas TIMESTAMP NOT NULL ,
@@ -60,8 +65,7 @@ create table uporabniki (
     last_login TEXT NOT NULL,
     emso TEXT NOT NULL
 );
-SHOW SERVER_ENCODING;
-INSERT INTO uporabniki(username, role, password_hash, last_login, emso) VALUES ('čšž', 'sodnik', 'vanja', '12', '23');
+INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, st_mest, zmagovalec) VALUES ('End of summer tournament', 'Ljubljana', '21.8.2024', '16', '');
 
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO zivak;
