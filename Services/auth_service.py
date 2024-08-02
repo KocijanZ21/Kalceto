@@ -10,15 +10,54 @@ class AuthService:
     def __init__(self):
          self.repo = Repo()
 
+
+    """def zakodiraj_sumnik(self, besedilo : str) -> str:
+        sumniki = {'š': 's-','č': 'c-','ž' : 'z-'}
+        besedilo2 = ''
+        for crka in besedilo:
+            if crka.lower() in sumniki.keys():
+                for sumnik in sumniki.keys():
+                    if sumnik == crka.lower():
+                        if crka.isupper():
+                            besedilo2 += sumniki[sumnik][0].upper() +'-'  
+                        else:  
+                            besedilo2 += sumniki[sumnik]
+            else:
+                besedilo2 += crka
+        return besedilo2
+            
+    def odkodiraj_sumnik(self, besedilo : str) -> str:
+        besedilo2 = ''
+        for i in range(len(besedilo)):
+            if besedilo[i] == '-':
+                prejsna = besedilo[i-1]
+                besedilo2 = besedilo2[ : -1]
+                match(prejsna.lower()):
+                    case 'z':
+                        if prejsna.isupper():
+                            besedilo2 += 'ž'.upper() 
+                        else:
+                            besedilo2 += 'ž'
+                    case 's':
+                        if prejsna.isupper():
+                            besedilo2 += 'š'.upper() 
+                        else:
+                            besedilo2 += 'š'
+                    case 'c':
+                        if prejsna.isupper():
+                            besedilo2 += 'č'.upper() 
+                        else:
+                            besedilo2 += 'č'   
+            else:
+                besedilo2 += besedilo[i]
+        return besedilo2"""
+
     def obstaja_uporabnik(self, uporabnik: str) -> bool:
         try:
             user = self.repo.dobi_uporabnika(uporabnik)
             return True
         except:
             return False
-        
-    def posodobi_vlogo(self, uporabnik: str, vloga: str):
-        self.repo.posodobi_vlogo(uporabnik, vloga)
        
 
     def prijavi_uporabnika(self, uporabnik : str, geslo: str) -> UporabnikDto | bool :
@@ -38,7 +77,7 @@ class AuthService:
         
         return False
 
-    def dodaj_uporabnika(self, uporabnik: str, rola: str, oseba: str, geslo: str) -> UporabnikDto:
+    def dodaj_uporabnika(self, uporabnik: str, rola: str, emso: str, geslo: str) -> UporabnikDto:
 
         # zgradimo hash za geslo od uporabnika
        # Najprej geslo zakodiramo kot seznam bajtov
@@ -53,18 +92,18 @@ class AuthService:
         # Sedaj ustvarimo objekt Uporabnik in ga zapišemo bazo
 
         u = Uporabnik(
-            username=uporabnik,
+            username=uporabnik,#self.zakodiraj_sumnik(uporabnik), 
             role=rola,
             password_hash=password_hash.decode(),
             last_login= date.today().isoformat(),
-            oseba=oseba
+            emso = emso
         )
 
         self.repo.dodaj_uporabnika(u)
 
         return UporabnikDto(username=uporabnik, role=rola)
     
-    def dodaj_igralca(self, emso: str, ime: str, priimek: str, spol: str, drzava: str, email: str, rojstni_dan: str) -> igralec:
+    def dodaj_igralca(self, emso: str, ime: str, priimek: str, spol: str, drzava: str, email: str, rojstni_dan: str) -> igralec: #todo 
         i = igralec(
             emso = emso,
             ime = ime,
@@ -80,6 +119,13 @@ class AuthService:
         except:
             return False
         
+    def dobi_uporabnika(self, username: str) -> igralec|sodnik:
+        uporabnik = self.repo.dobi_uporabnika(username)
+        vloga = uporabnik.role
+        if vloga == 'igralec':
+            return self.repo.dobi_igralca(uporabnik.emso)
+        
+        return  self.repo.dobi_sodnika(uporabnik.emso)
 
     def dobi_igralca(self, emso: str) -> igralec:
         igralec = self.repo.dobi_igralca(emso)
@@ -88,7 +134,7 @@ class AuthService:
     def odstrani_igralca(self, emso: str):
         self.repo.odstrani_igralca(emso)
 
-    def dodaj_sodnika(self, emso: str, ime: str, priimek: str, spol: str, drzava: str, email: str, rojstni_dan: str) -> sodnik:
+    def dodaj_sodnika(self, emso: str, ime: str, priimek: str, spol: str, drzava: str, email: str, rojstni_dan: str) -> sodnik: #todo 
         s = sodnik(
             emso = emso,
             ime = ime,
@@ -105,9 +151,16 @@ class AuthService:
            return False
 
     def dobi_sodnika(self, emso: str)  -> sodnik:
-        sodnik = self.repo.dobi_sodnika(emso) 
+        sodnik = self.repo.dobi_sodnika(emso)
+        #priimek1 = self.repo.odkodiraj_sumnik(sodnik.priimek) 
+        #sodnik.priimek = priimek1
         return sodnik
 
     def odstrani_sodnika(self, emso: str):
-        self.repo.odstrani_sodnika(emso)    
+        self.repo.odstrani_sodnika(emso)   
+
+   
+   
+
+
     

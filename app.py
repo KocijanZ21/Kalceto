@@ -36,16 +36,6 @@ def cookie_required(f):
 def static(filename):
     return static_file(filename, root='Presentation/static')
 
-#@get('/')
-#def index():
-    """
-    Domača stran.
-    """
-    rola = request.get_cookie("rola")
-    uporabnik = request.get_cookie("uporabnik")
-    return template('prijava_up.html', rola = rola, uporabnik=uporabnik)
-
-
 @get('/')
 def zacetna_stran():
     return template('zacetna_stran.html')
@@ -57,30 +47,30 @@ def registracija():
 @post('/registracija')
 def registracija_post():
     emso = request.forms.get('emso')
-    ime = request.forms.get('ime')
-    priimek = request.forms.get('priimek')
-    spol = request.forms.get('spol')
-    drzava = request.forms.get('drzava')
+    ime = request.forms.get('ime').encode('latin1').decode('utf-8') #dodala encode in decode, ker drugače ni pisalo šumnikov
+    priimek = request.forms.get('priimek').encode('latin1').decode('utf-8')
+    spol = request.forms.get('spol').encode('latin1').decode('utf-8')
+    drzava = request.forms.get('drzava').encode('latin1').decode('utf-8')
     email = request.forms.get('email')
     rojstni_dan = request.forms.get('rojstni_dan')
-    username = request.forms.get('username')
+    username = request.forms.get('username').encode('latin1').decode('utf-8')
     password = request.forms.get('password')
     role = request.forms.get('role')
-    oseba = ''
+    emso = request.forms.get('emso')
 
     # Preveri, če uporabniško ime že obstaja
     if auth.obstaja_uporabnik(username):
         return template('registracija.html', error="Uporabniško ime že obstaja.")
 
     # Dodaj uporabnika in igralca/sodnika glede na role
-    auth.dodaj_uporabnika(username, role, oseba, password)
+    auth.dodaj_uporabnika(username, role, emso, password)
     if role == "igralec":
         auth.dodaj_igralca(emso, ime, priimek, spol, drzava, email, rojstni_dan)
-    else: #dela oki ampak ne vnese v bazo če je sodnik
+    else: 
         auth.dodaj_sodnika(emso, ime, priimek, spol, drzava, email, rojstni_dan)
     
 
-    redirect(url('zacetna_stran'))
+    redirect(url('/prijava'))
 
 @get('/prijava')
 def prijava():
@@ -96,41 +86,34 @@ def prijava_post():
 
     prijava = auth.prijavi_uporabnika(username, password)
     if prijava:
-        
+        response.set_cookie("uporabnik", username)
         # redirect v večino primerov izgleda ne deluje
-        redirect(url('/'))
+        redirect(url('/domov'))
 
     else:
         return template("prijava_up.html", uporabnik=None, rola=None, error="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
 
+@get('/domov')
+def domov():
+    uporabnik = request.get_cookie("uporabnik")
+    podatki = auth.dobi_uporabnika(uporabnik)
+    emso = podatki.emso
+    ime = podatki.ime
+    priimek = podatki.priimek
+    spol = podatki.spol
+    drzava = podatki.drzava
+    email = podatki.email
+    rojstni_dan = podatki.rojstni_dan
 
+    return template('domov.html', uporabnik = uporabnik, emso = emso, ime = ime, priimek = priimek, spol = spol, drzava = drzava, email = email, rojstni_dan = rojstni_dan)
 
+@get('/prijava_na_turnir')
+def prijava_na_turnir():
+    return template('prijava_na_turnir.html') 
 
-
-
-#@get('/')#get podatke dobim iz url
-#@cookie_required
-#def index():
-    return template_user('prijava.html', up = "", passw = "", izbira = False)
-
-#@post('/') #post podatke dobim iz forme
-#def dodaj_uporabnika():
-    username = request.forms.get("username")
-    password = request.forms.get("password")
-    #password_hash = hashlib.md5(password.encode())
-    role = request.forms.get("role")
-    last_login = datetime.datetime.now()
-    oseba = ''
-    if not auth.obstaja_uporabnik(username): #ta se zgodi ko uporabnik še ne obstaja
-        auth.dodaj_uporabnika(username, '', oseba, password)
-        return template("prijava.html", up = username, passw = password, izbira = True)
-    else: #ta se zgodi, če uporabnik obstaja ali pa če ni obstajal in je submital formo (nima še role)
-        preusmeritev = "prijava_" + role
-        if len(role) > 0:
-            auth.posodobi_vlogo(username, role)
-        print(preusmeritev, username)
-        return template_user(preusmeritev)
-
+@get('/tekme')
+def tekme():
+    return template('tekme.html')  
 
 
 if __name__ == "__main__":

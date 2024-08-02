@@ -54,12 +54,14 @@ CREATE TABLE tekma (
     CHECK (igralec1 <> igralec2)
 );
 create table uporabniki (
-    username TEXT PRIMARY KEY,
+    username TEXT PRIMARY KEY UNIQUE,
     role TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     last_login TEXT NOT NULL,
-    oseba TEXT NOT NULL
+    emso TEXT NOT NULL
 );
+SHOW SERVER_ENCODING;
+INSERT INTO uporabniki(username, role, password_hash, last_login, emso) VALUES ('čšž', 'sodnik', 'vanja', '12', '23');
 
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO zivak;

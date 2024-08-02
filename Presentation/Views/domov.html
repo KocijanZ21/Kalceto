@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Osebna Stran</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://images.pexels.com/photos/5453906/pexels-photo-5453906.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed; /* Nastavitev slike ozadja */
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #458347; /* Zelena barva */
+            overflow: hidden;
+            padding: 14px 16px;
+            text-align: right;
+        }
+        .navbar a {
+            float: right;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        .navbar a:hover {
+            background-color: #45a049; /* Temnejša zelena na hover */
+            color: white;
+        }
+        .content {
+            padding: 20px;
+            margin-top: 20px; /* Pusti prostor za navigacijsko vrstico */
+        }
+        .profile-box {
+            background-color: rgb(245, 240, 240); /* Temnejši siv pravokotnik */
+            padding: 20px;
+            width: 500px; /* Širina boxa */
+            height: 350px;
+        }
+        .profile-box h1 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigacijska vrstica na vrhu -->
+    <div class="navbar">
+        <a href="/tekme">Tekme</a>
+        <a href="/prijava_na_turnir">Prijava na turnir</a>
+    </div>
+
+    <!-- Glavna vsebina strani -->
+    <div class="content">
+        <div class="profile-box">
+            <!-- Osebni podatki -->
+            <h1>Moji podatki</h1>
+            <p>Uporabniško ime: {{ uporabnik }}</p>
+            <p>Emšo: {{ emso }}</p>
+            <p>Ime: {{ ime }}</p>
+            <p>Priimek: {{ priimek }}</p>
+            <p>Email: {{ email }}</p>
+            <p>Spol: {{spol}}</p>
+            <p>Država: {{ drzava }}</p>
+            <p>Rojstni dan: {{ rojstni_dan }}</p>
+        </div>  
+    </div>
+</body>
+</html>
+
+
+

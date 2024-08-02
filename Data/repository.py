@@ -48,27 +48,21 @@ class Repo:
   
     def dodaj_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
-            INSERT into uporabniki(username, role, password_hash, last_login, oseba)
+            INSERT into uporabniki(username, role, password_hash, last_login, emso)
             VALUES (%s, %s, %s, %s, %s)
-            """, (uporabnik.username,uporabnik.role, uporabnik.password_hash, uporabnik.last_login, uporabnik.oseba))
+            """, (uporabnik.username,uporabnik.role, uporabnik.password_hash, uporabnik.last_login, uporabnik.emso))
         self.conn.commit()
 
 
     def dobi_uporabnika(self, username:str) -> Uporabnik:
         self.cur.execute("""
-            SELECT username, role, password_hash, last_login, oseba
+            SELECT username, role, password_hash, last_login, emso
             FROM uporabniki
             WHERE username = %s
         """, (username,))
          
         u = Uporabnik.from_dict(self.cur.fetchone())
-        return u
-    
-    def posodobi_vlogo(self, uporabnik: str, vloga: str):
-        self.cur.execute("""
-            Update uporabniki set role = %s where username = %s
-            """, (vloga, uporabnik))
-        self.conn.commit()  
+        return u 
     
     def posodobi_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
@@ -86,7 +80,7 @@ class Repo:
 
     def dobi_igralca(self, emso : str) -> igralec:
         self.cur.execute("""
-            SELECT emso, ime, priimek, spol drzava, email, rojstni_dan FROM igralec
+            SELECT emso, ime, priimek, spol, drzava, email, rojstni_dan FROM igralec
             WHERE emso = %s
         """, (emso,))
 
