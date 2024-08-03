@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS igralec;
 DROP TABLE IF EXISTS sodnik;
 DROP TABLE IF EXISTS turnir;
 DROP TABLE IF EXISTS tekma;
+DROP TABLE IF EXISTS prijave_turnir;
 
 
 CREATE TABLE igralec (
@@ -38,6 +39,7 @@ CREATE TABLE turnir(
     id_turnirja TEXT PRIMARY KEY,
     kraj TEXT NOT NULL,
     datum_pricetka DATE NOT NULL,
+    datum_konca_prijav DATE NOT NULL,
     st_mest INTEGER NOT NULL,
     zmagovalec TEXT NOT NULL
 );
@@ -65,7 +67,7 @@ create table uporabniki (
     last_login TEXT NOT NULL,
     emso TEXT NOT NULL
 );
-INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, st_mest, zmagovalec) VALUES ('End of summer tournament', 'Ljubljana', '21.8.2024', '16', '');
+INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec) VALUES ('End of summer tournament', 'Ljubljana', '25.8.2024', '15.8.2024', '16', '');
 
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO zivak;

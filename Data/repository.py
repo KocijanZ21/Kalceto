@@ -26,7 +26,6 @@ class Repo:
         self.cur.execute(""" 
             SELECT id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec 
             FROM turnir
-            Order by cas desc
         """)
         t = [turnir.from_dict(t) for t in self.cur.fetchall()]
         return t
@@ -51,8 +50,16 @@ class Repo:
             FROM prijave_turnir
             WHERE kateri_turnir = %s
         """,(kateri_turnir,))
-        pri = prijave_turnir.from_dict(self.cur.fetchall())
+        pri = [prijave_turnir.from_dict(pri) for pri in self.cur.fetchall()]
         return pri
+    
+    def sestej_prijave_turnir(self, kateri_turnir: str ) -> prijave_turnir:
+        self.cur.execute("""
+            SELECT COUNT(up_ime)
+            FROM prijave_turnir
+            WHERE kateri_turnir = %s
+            """, (kateri_turnir,))
+        return self.cur.fetchone()
     
     def dodaj_prijavo_turnir(self, p : prijave_turnir):
         self.cur.execute("""

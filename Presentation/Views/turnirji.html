@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turnirji</title>
+</head>
+<body>
+    <h1>Seznam turnirjev</h1>
+    
+    %if turnirji:
+        %for turnir,st in turnirji:
+            <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+                <p><strong>Kraj:</strong> {{turnir.kraj}}</p>
+                <p><strong>Datum pričetka:</strong> {{turnir.datum_pricetka}}</p>
+                <p><strong>Datum konca prijav:</strong> {{turnir.datum_konca_prijav}}</p>
+                <p><strong>Število mest:</strong> {{turnir.st_mest}}</p>
+                <p><strong>Zmagovalec:</strong> {{turnir.zmagovalec or 'Še ni znan'}}</p>
+                {{st}}
+                
+                %if turnir.datum_konca_prijav <= danasnji_datum:
+                    <p style="color: red;">Prijave so zaprte</p>
+                %else:
+                    <!-- Gumb za prijavo -->
+                    <form action="/prijava_na_turnir/{{turnir.id_turnirja}}" method="post">
+                        <button type="submit">Prijavi se</button>
+                    </form>
+                %end
+            </div>
+        %end
+    %else:
+        <p>Trenutno ni razpoložljivih turnirjev.</p>
+    %end
+</body>
+</html>
+
+

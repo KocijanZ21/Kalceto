@@ -1,7 +1,7 @@
 from functools import wraps
 from Presentation.bottleext import get, post, run, request, template, redirect, static_file, url, response, template_user
 
-
+from Services.turnir_service import TurnirService
 from Services.auth_service import AuthService
 import os
 import datetime
@@ -13,6 +13,7 @@ import datetime
 
 
 auth = AuthService()
+service = TurnirService()
 
 
 # privzete nastavitve
@@ -110,9 +111,33 @@ def domov():
 
     return template('domov.html', uporabnik = uporabnik, vloga = vloga, emso = emso, ime = ime, priimek = priimek, spol = spol, drzava = drzava, email = email, rojstni_dan = rojstni_dan)
 
-@get('/prijava_na_turnir')
-def prijava_na_turnir():
-    return template('prijava_na_turnir.html') 
+@get('/turnirji')
+def turnir():
+    uporabnik = request.get_cookie("uporabnik").encode('latin1').decode('utf-8')
+    turnirji = service.dobi_turnir()
+    danasnji_datum = datetime.date.today()
+    st_vseh = []
+    for t in turnirji:
+        st_oseb = service.sestej_prijave_turnir(t.id_turnirja)
+        print(st_oseb)
+        st_vseh.append(st_oseb)
+    turnir_st = zip(turnirji, st_vseh)    
+    return template_user('turnirji.html', turnirji = turnir_st, danasnji_datum = danasnji_datum)
+
+@post('/prijava_na_turnir/<id_turnirja>')
+def prijavi_se_na_turnir(id_turnirja):
+    uporabnik = request.get_cookie("uporabnik").encode('latin1').decode('utf-8')
+    
+    try:
+        if service.dobi_prijave_turnir(id_turnirja):
+            return "Uporabnik je že prijavljen na ta turnir!"
+        
+        # Dodaj uporabnika v tabelo prijava_turnir
+        service.dodaj_prijavo_turnir(id_turnirja, uporabnik)
+        return "Prijava je bila uspešna!"
+    except Exception as e:
+        print(f"Napaka pri prijavi na turnir: {e}")
+        return "Prišlo je do napake pri prijavi."
 
 @get('/tekme')
 def tekme():
