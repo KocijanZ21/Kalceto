@@ -44,12 +44,21 @@ class Repo:
         """, (id_turnirja,))
         self.conn.commit()
     
-    def dobi_prijave_turnir(self, kateri_turnir: str) -> prijave_turnir:
+    def dobi_prijave_turnir(self, kateri_turnir: str, up_ime : str) -> prijave_turnir:
         self.cur.execute(""" 
             SELECT kateri_turnir, up_ime
             FROM prijave_turnir
             WHERE kateri_turnir = %s
         """,(kateri_turnir,))
+        pri = [prijave_turnir.from_dict(pri) for pri in self.cur.fetchall()]
+        return pri
+    
+    def dobi_prijave_turnir_oseba(self, kateri_turnir: str, up_ime : str) -> prijave_turnir:
+        self.cur.execute(""" 
+            SELECT kateri_turnir, up_ime
+            FROM prijave_turnir
+            WHERE kateri_turnir = %s and up_ime = %s
+        """,(kateri_turnir, up_ime,))
         pri = [prijave_turnir.from_dict(pri) for pri in self.cur.fetchall()]
         return pri
     

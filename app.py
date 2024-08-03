@@ -129,7 +129,7 @@ def prijavi_se_na_turnir(id_turnirja):
     uporabnik = request.get_cookie("uporabnik").encode('latin1').decode('utf-8')
     
     try:
-        if service.dobi_prijave_turnir(id_turnirja):
+        if service.dobi_prijave_turnir_oseba(id_turnirja, uporabnik):
             return "Uporabnik je že prijavljen na ta turnir!"
         
         # Dodaj uporabnika v tabelo prijava_turnir

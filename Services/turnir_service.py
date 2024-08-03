@@ -31,6 +31,10 @@ class TurnirService:
        prijave = self.repo.dobi_prijave_turnir(kateri_turnir)
        return prijave
     
+    def dobi_prijave_turnir_oseba(self, kateri_turnir: str, up_ime : str) -> prijave_turnir:
+       prijave_oseba = self.repo.dobi_prijave_turnir_oseba(kateri_turnir, up_ime)
+       return prijave_oseba
+    
     def sestej_prijave_turnir(self,kateri_turnir: str) -> prijave_turnir:
        st_prijavljenih = self.repo.sestej_prijave_turnir(kateri_turnir)[0]
        return st_prijavljenih

@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnirji</title>
+    <style>
+        /* Zeleni pas z naslovom */
+        .zeleni-pas {
+            background-color: #458347e6; /* Zeleni odtenek */
+            padding: 15px; /* Notranji rob */
+            color: white; /* Barva besedila */
+            font-size: 40px; /* Velikost pisave naslova */
+            font-weight: bold; /* Odebeljeno besedilo */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Senca pod pasom */
+            display: flex; /* Uporaba flexboxa */
+            align-items: center; /* Vertikalna poravnava na sredino */
+            justify-content: flex-start; /* Poravnava vsebine na levo */
+        }
+    </style>
 </head>
 <body>
-    <h1>Seznam turnirjev</h1>
+    <div class="zeleni-pas">
+        Seznam turnirjev
+    </div>
     
     %if turnirji:
         %for turnir,st in turnirji:
@@ -14,9 +32,8 @@
                 <p><strong>Datum konca prijav:</strong> {{turnir.datum_konca_prijav}}</p>
                 <p><strong>Število mest:</strong> {{turnir.st_mest}}</p>
                 <p><strong>Zmagovalec:</strong> {{turnir.zmagovalec or 'Še ni znan'}}</p>
-                {{st}}
                 
-                %if turnir.datum_konca_prijav <= danasnji_datum:
+                %if turnir.datum_konca_prijav <= danasnji_datum or st >= 16:
                     <p style="color: red;">Prijave so zaprte</p>
                 %else:
                     <!-- Gumb za prijavo -->
