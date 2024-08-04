@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <title>Tekme</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+
+        body{
+            font-size: 20px;
+        }
+          /* Zeleni pas z naslovom */
+        .zeleni-pas {
+            background-color: #458347e6; /* Zeleni odtenek */
+            padding: 15px; /* Notranji rob */
+            color: white; /* Barva besedila */
+            font-size: 40px; /* Velikost pisave naslova */
+            font-weight: bold; /* Odebeljeno besedilo */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Senca pod pasom */
+            display: flex; /* Uporaba flexboxa */
+            align-items: center; /* Vertikalna poravnava na sredino */
+            justify-content: flex-start; /* Poravnava vsebine na levo */
         }
         li{
             text-align: left;
@@ -21,9 +32,14 @@
             color: rgb(94, 94, 219);
             text-decoration: underline;
         }
+      
+        
     </style>
 </head>
 <body>
+    <div class="zeleni-pas">
+        Ogled tekem na posameznem turnirju
+    </div>
 %if turnirji:
     <ul>
         %for turnir in turnirji:

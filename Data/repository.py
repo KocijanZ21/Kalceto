@@ -29,6 +29,16 @@ class Repo:
         """)
         t = [turnir.from_dict(t) for t in self.cur.fetchall()]
         return t
+    
+    def dobi_turnir_en(self, id_turnirja: str) -> List[turnir]:
+        self.cur.execute(""" 
+            SELECT id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec 
+            FROM turnir
+            Where id_turnirja = %s
+        """, (id_turnirja,))
+        t_en = [turnir.from_dict(t_en) for t_en in self.cur.fetchall()]
+        return t_en
+
 
     def dodaj_turnir(self, t : turnir):
         self.cur.execute("""
@@ -184,11 +194,11 @@ class Repo:
     
     def dobi_tekmo_turnir(self, ime_turnirja : str ) -> List[tekma]:
         self.cur.execute("""
-            SELECT id_tekme, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2
+            SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2
             FROM tekma
             WHERE ime_turnirja = %s
         """, (ime_turnirja,)) 
-        ime = tekma.from_dict(self.cur.fetchone())
+        ime = [tekma.from_dict(ime) for ime in self.cur.fetchall()]
         return ime
     
     def dodaj_tekmo(self, tek : tekma):
@@ -203,4 +213,12 @@ class Repo:
             DELETE from tekma
             WHERE id = %s
         """, (id_tekme,))
+        self.conn.commit()
+
+    def posodobi_izid_tekme(self, id_tekme, izid):
+        self.cur.execute("""
+            UPDATE tekma
+            SET izid = %s
+            WHERE id_tekme = %s
+        """, (izid, id_tekme))
         self.conn.commit()

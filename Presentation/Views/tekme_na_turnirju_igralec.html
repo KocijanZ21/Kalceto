@@ -34,24 +34,7 @@
                 <p><strong>Prvi igralec:</strong> {{tekma.igralec1}}</p>
                 <p><strong>Drugi igralec:</strong> {{tekma.igralec2}}</p>
                 <p><strong>Zmagovalec:</strong> {{tekma.izid or 'Še ni znan'}}</p>
-
-                %if tekma.izid == tekma.igralec1:
-                
-                %elif tekma.izid == tekma.igralec2:
-                
-                %else:
-                <form action="/dodaj_izid" method="post">
-                    <input type="hidden" name="tekma_id" value="{{tekma.id_tekme}}">
-                    <label for="zmagovalec">Izberi zmagovalca:</label>
-                    <select name="zmagovalec" required>
-                        <option value="" disabled selected>Izberite zmagovalca</option>
-                        <option value="{{tekma.igralec1}}">{{tekma.igralec1}}</option>
-                        <option value="{{tekma.igralec2}}">{{tekma.igralec2}}</option>
-                    </select>
-                    <button type="submit">Shrani</button>
-                </form>    
-                %end
-
+              
             </div>
         %end
     %elif danasnji_datum < datum_konca_prijav:
@@ -62,4 +45,3 @@
     %end
 </body>
 </html>
- 

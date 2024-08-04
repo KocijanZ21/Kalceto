@@ -4,7 +4,7 @@ from Presentation.bottleext import get, post, run, request, template, redirect, 
 from Services.turnir_service import TurnirService
 from Services.auth_service import AuthService
 import os
-from datetime import datetime, date
+from datetime import datetime, date, time
 from datetime import timedelta
 import random
 
@@ -149,39 +149,102 @@ def tekme():
 @get('/tekme/<id_turnirja>')
 def tekme(id_turnirja):
     id_turnirja = id_turnirja.replace('%20', ' ')
-    print(id_turnirja)
-    prijavljeni = service.dobi_prijave_turnir(id_turnirja)
-    print(prijavljeni)
-    prijavljene_osebe = [oseba.up_ime for oseba in prijavljeni]
-    sodniki = auth.dobi_vse_sodnike()
-    emso_sodnikov = [sodni.emso for sodni in sodniki]
-    sodniki_up = []
-    for st in emso_sodnikov:
-        sodnik1 = auth.dobi_uporabnika_emso(st)
-        sodniki_up.append(sodnik1)
-    sodniki_up    
+    en_turnir = service.dobi_turnir_en(id_turnirja)
+    vloga = request.get_cookie("vloga")
+    datum_turnirja = [datum.datum_pricetka for datum in en_turnir]
+    datum_konca = [dat.datum_konca_prijav for dat in en_turnir]
+    datum_konca_prijav = datum_konca[0]
+    danasnji_datum = date.today()
 
-    up_ime_sodniki = [up_imena.username for up_imena in sodniki_up]
+    if vloga == 'sodnik':
 
-    cas =  datetime.now()
-    cas_tekme = cas.replace(hour=10, minute=0, second=0)
-    miza = 1
-    izid = ''
-    random.shuffle(prijavljene_osebe)
+        if service.sestej_prijave_turnir(id_turnirja) == 16:
+            tekme = service.dobi_tekmo_turnir(id_turnirja)
 
-    while len(prijavljene_osebe) > 1:
-        igralec1 = prijavljene_osebe.pop()
-        igralec2 = prijavljene_osebe.pop()
-        sodnik_tekme = random.choice(up_ime_sodniki) 
+            if tekme:
+                return template('tekme_na_turnirju.html', tekme=tekme)
 
-        service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2)    
-        
+            prijavljeni = service.dobi_prijave_turnir(id_turnirja)
+            prijavljene_osebe = [oseba.up_ime for oseba in prijavljeni]
+            sodniki = auth.dobi_vse_sodnike()
+            emso_sodnikov = [sodni.emso for sodni in sodniki]
+            sodniki_up = []
+            for st in emso_sodnikov:
+                sodnik1 = auth.dobi_uporabnika_emso(st)
+                sodniki_up.append(sodnik1)
+            sodniki_up    
 
-        cas_tekme += timedelta(hours=1)
-    tekme = service.dobi_tekmo()
+            up_ime_sodniki = [up_imena.username for up_imena in sodniki_up]
 
-    return template('tekme_na_turnirju.html', tekme = tekme)
+            zeljena_ura = time(10, 0)
+            cas_tekme = datetime.combine(datum_turnirja[0], zeljena_ura)
+            miza = 1
+            izid = ''
+            random.shuffle(prijavljene_osebe)
 
+            while len(prijavljene_osebe) > 1:
+                igralec1 = prijavljene_osebe.pop()
+                igralec2 = prijavljene_osebe.pop()
+                sodnik_tekme = random.choice(up_ime_sodniki) 
+
+                service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2)    
+
+                cas_tekme += timedelta(hours=1)
+
+            tekme = service.dobi_tekmo_turnir(id_turnirja)
+            return template('tekme_na_turnirju.html', tekme = tekme, vloga = vloga, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+        else:
+            tekme = service.dobi_tekmo_turnir(id_turnirja)
+            return template('tekme_na_turnirju.html', tekme = tekme,danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+    else: 
+        if service.sestej_prijave_turnir(id_turnirja) == 16:
+            tekme = service.dobi_tekmo_turnir(id_turnirja)
+
+            if tekme:
+                return template('tekme_na_turnirju_igralec.html', tekme=tekme)
+
+            prijavljeni = service.dobi_prijave_turnir(id_turnirja)
+            prijavljene_osebe = [oseba.up_ime for oseba in prijavljeni]
+            sodniki = auth.dobi_vse_sodnike()
+            emso_sodnikov = [sodni.emso for sodni in sodniki]
+            sodniki_up = []
+            for st in emso_sodnikov:
+                sodnik1 = auth.dobi_uporabnika_emso(st)
+                sodniki_up.append(sodnik1)
+            sodniki_up    
+
+            up_ime_sodniki = [up_imena.username for up_imena in sodniki_up]
+
+            zeljena_ura = time(10, 0)
+            cas_tekme = datetime.combine(datum_turnirja[0], zeljena_ura)
+            miza = 1
+            izid = ''
+            random.shuffle(prijavljene_osebe)
+
+            while len(prijavljene_osebe) > 1:
+                igralec1 = prijavljene_osebe.pop()
+                igralec2 = prijavljene_osebe.pop()
+                sodnik_tekme = random.choice(up_ime_sodniki) 
+
+                service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2)    
+
+                cas_tekme += timedelta(hours=1)
+
+            tekme = service.dobi_tekmo_turnir(id_turnirja)
+            return template('tekme_na_turnirju_igralec.html', tekme = tekme, vloga = vloga, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+        else:
+            tekme = service.dobi_tekmo_turnir(id_turnirja)
+            return template('tekme_na_turnirju_igralec.html', tekme = tekme,danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+
+@post('/dodaj_izid')
+def dodaj_izid():
+    tekma_id = request.forms.get('tekma_id')
+    zmagovalec = request.forms.get('zmagovalec')
+
+    # Klic funkcije za posodobitev izida tekme v bazi
+    service.posodobi_izid_tekme(tekma_id, zmagovalec)
+
+    redirect('/domov')
 
    
 

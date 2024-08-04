@@ -16,6 +16,10 @@ class TurnirService:
         tur = self.repo.dobi_turnir()
         return tur
     
+    def dobi_turnir_en(self, id_turnirja: str) -> List[turnir]:
+       tur_en = self.repo.dobi_turnir_en(id_turnirja)
+       return tur_en
+    
     def dodaj_prijavo_turnir(self, kateri_turnir : str, up_ime : str) -> prijave_turnir:
         p = prijave_turnir(
             kateri_turnir=kateri_turnir,
@@ -58,3 +62,11 @@ class TurnirService:
     def dobi_tekmo(self) -> List[tekma]:
        tekme = self.repo.dobi_tekmo()
        return tekme
+    
+    def dobi_tekmo_turnir(self, ime_turnirja : str ) -> List[tekma]:
+       tekme_turnir = self.repo.dobi_tekmo_turnir(ime_turnirja)
+       return tekme_turnir
+    
+    def posodobi_izid_tekme(self, id_tekme, izid):
+       nova_tekma = self.repo.posodobi_izid_tekme(id_tekme, izid)
+       return nova_tekma

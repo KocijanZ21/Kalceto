@@ -55,10 +55,9 @@ CREATE TABLE tekma (
     miza INTEGER NOT NULL ,
     izid TEXT NOT NULL,
     ime_turnirja TEXT NOT NULL REFERENCES turnir(id_turnirja),
-    sodnik_tekme TEXT NOT NULL REFERENCES sodnik(emso),
-    igralec1 TEXT NOT NULL REFERENCES igralec(emso),
-    igralec2 TEXT NOT NULL REFERENCES igralec(emso),
-    CHECK (igralec1 <> igralec2)
+    sodnik_tekme TEXT NOT NULL REFERENCES uporabniki(username),
+    igralec1 TEXT NOT NULL REFERENCES uporabniki(username),
+    igralec2 TEXT NOT NULL REFERENCES uporabniki(username)
 );
 create table uporabniki (
     username TEXT PRIMARY KEY UNIQUE,
@@ -70,6 +69,8 @@ create table uporabniki (
 INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec) VALUES ('End of summer tournament', 'Ljubljana', '25.8.2024', '15.8.2024', '16', '');
 
 INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec) VALUES ('End of winter tournament', 'Ljubljana', '25.12.2024', '15.12.2024', '16', '');
+INSERT INTO tekma(cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2) VALUES ('2024-08-25 10:00:00', '1','','End of summer tournament', 'žana.ž', 'filip.k', 'lara.n')
+
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO zivak;
 
