@@ -44,7 +44,7 @@ class Repo:
         """, (id_turnirja,))
         self.conn.commit()
     
-    def dobi_prijave_turnir(self, kateri_turnir: str, up_ime : str) -> prijave_turnir:
+    def dobi_prijave_turnir(self, kateri_turnir: str) -> prijave_turnir:
         self.cur.execute(""" 
             SELECT kateri_turnir, up_ime
             FROM prijave_turnir
@@ -52,6 +52,7 @@ class Repo:
         """,(kateri_turnir,))
         pri = [prijave_turnir.from_dict(pri) for pri in self.cur.fetchall()]
         return pri
+    
     
     def dobi_prijave_turnir_oseba(self, kateri_turnir: str, up_ime : str) -> prijave_turnir:
         self.cur.execute(""" 
@@ -102,6 +103,16 @@ class Repo:
         u = Uporabnik.from_dict(self.cur.fetchone())
         return u 
     
+    def dobi_uporabnika_emso(self, emso:str) -> Uporabnik:
+        self.cur.execute("""
+            SELECT username
+            FROM uporabniki
+            WHERE emso = %s
+        """, (emso,))
+         
+        up = Uporabnik.from_dict(self.cur.fetchone())
+        return up 
+    
     def posodobi_uporabnika(self, uporabnik: Uporabnik):
         self.cur.execute("""
             Update uporabniki set last_login = %s where username = %s
@@ -140,6 +151,14 @@ class Repo:
 
         s = sodnik.from_dict(self.cur.fetchone())
         return s
+    
+    def dobi_vse_sodnike(self) -> List[sodnik]:
+        self.cur.execute("""
+            SELECT emso, ime, priimek, spol, drzava, email, rojstni_dan FROM sodnik
+        """)
+
+        sod = [sodnik.from_dict(sod) for sod in self.cur.fetchall()]
+        return sod
     
     def dodaj_sodnika(self, s : sodnik):
         self.cur.execute("""

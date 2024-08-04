@@ -126,6 +126,10 @@ class AuthService:
             return self.repo.dobi_igralca(uporabnik.emso)
         
         return  self.repo.dobi_sodnika(uporabnik.emso)
+    
+    def dobi_uporabnika_emso(self, emso:str) -> Uporabnik:
+        uporab = self.repo.dobi_uporabnika_emso(emso)
+        return uporab
 
     def dobi_igralca(self, emso: str) -> igralec:
         igralec = self.repo.dobi_igralca(emso)
@@ -155,6 +159,10 @@ class AuthService:
         #priimek1 = self.repo.odkodiraj_sumnik(sodnik.priimek) 
         #sodnik.priimek = priimek1
         return sodnik
+    
+    def dobi_vse_sodnike(self) -> sodnik:
+        sod = self.repo.dobi_vse_sodnike()
+        return sod
 
     def odstrani_sodnika(self, emso: str):
         self.repo.odstrani_sodnika(emso)   

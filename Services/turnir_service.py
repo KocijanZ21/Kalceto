@@ -38,3 +38,23 @@ class TurnirService:
     def sestej_prijave_turnir(self,kateri_turnir: str) -> prijave_turnir:
        st_prijavljenih = self.repo.sestej_prijave_turnir(kateri_turnir)[0]
        return st_prijavljenih
+    
+    def dodaj_tekmo(self, cas: str, miza: int, izid: str, ime_turnirja: str, sodnik_tekme: str, igralec1: str, igralec2: str) -> tekma:
+        t = tekma(
+          cas=cas,
+          miza=miza,
+          izid=izid,
+          ime_turnirja=ime_turnirja,
+          sodnik_tekme=sodnik_tekme,
+          igralec1=igralec1,
+          igralec2=igralec2 
+        )
+        try:
+          self.repo.dodaj_tekmo(t)
+          return True
+        except:
+          return False
+        
+    def dobi_tekmo(self) -> List[tekma]:
+       tekme = self.repo.dobi_tekmo()
+       return tekme

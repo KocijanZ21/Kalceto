@@ -4,7 +4,9 @@ from Presentation.bottleext import get, post, run, request, template, redirect, 
 from Services.turnir_service import TurnirService
 from Services.auth_service import AuthService
 import os
-import datetime
+from datetime import datetime, date
+from datetime import timedelta
+import random
 
 
 # Ustvarimo instance servisov, ki jih potrebujemo. 
@@ -115,7 +117,7 @@ def domov():
 def turnir():
     uporabnik = request.get_cookie("uporabnik").encode('latin1').decode('utf-8')
     turnirji = service.dobi_turnir()
-    danasnji_datum = datetime.date.today()
+    danasnji_datum = date.today()
     st_vseh = []
     for t in turnirji:
         st_oseb = service.sestej_prijave_turnir(t.id_turnirja)
@@ -141,8 +143,55 @@ def prijavi_se_na_turnir(id_turnirja):
 
 @get('/tekme')
 def tekme():
-    return template('tekme.html')  
+    turnirji = service.dobi_turnir()
+    return template('tekme.html', turnirji = turnirji)
 
+@get('/tekme/<id_turnirja>')
+def tekme(id_turnirja):
+    id_turnirja = id_turnirja.replace('%20', ' ')
+    print(id_turnirja)
+    prijavljeni = service.dobi_prijave_turnir(id_turnirja)
+    print(prijavljeni)
+    prijavljene_osebe = [oseba.up_ime for oseba in prijavljeni]
+    sodniki = auth.dobi_vse_sodnike()
+    emso_sodnikov = [sodni.emso for sodni in sodniki]
+    sodniki_up = []
+    for st in emso_sodnikov:
+        sodnik1 = auth.dobi_uporabnika_emso(st)
+        sodniki_up.append(sodnik1)
+    sodniki_up    
+
+    up_ime_sodniki = [up_imena.username for up_imena in sodniki_up]
+
+    cas =  datetime.now()
+    cas_tekme = cas.replace(hour=10, minute=0, second=0)
+    miza = 1
+    izid = ''
+    random.shuffle(prijavljene_osebe)
+
+    while len(prijavljene_osebe) > 1:
+        igralec1 = prijavljene_osebe.pop()
+        igralec2 = prijavljene_osebe.pop()
+        sodnik_tekme = random.choice(up_ime_sodniki) 
+
+        service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2)    
+        
+
+        cas_tekme += timedelta(hours=1)
+    tekme = service.dobi_tekmo()
+
+    return template('tekme_na_turnirju.html', tekme = tekme)
+
+
+   
+
+
+    
+
+
+
+    
+    
 
 if __name__ == "__main__":
 

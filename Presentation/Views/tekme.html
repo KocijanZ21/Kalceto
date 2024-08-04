@@ -9,10 +9,32 @@
             text-align: center;
             margin-top: 50px;
         }
+        li{
+            text-align: left;
+        }
+        .povezava{
+            color: black;
+            text-decoration: none;
+        }
+
+        .povezava:hover{
+            color: rgb(94, 94, 219);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Bravo!</h1>
-    <p>Ogled tekem je uspešen.</p>
+%if turnirji:
+    <ul>
+        %for turnir in turnirji:
+            <li style=" padding: 10px; margin-bottom: 10px;">
+                <a class="povezava" href="/tekme/{{turnir.id_turnirja}}"><strong>{{turnir.id_turnirja}}</strong></a>
+            </li>
+        %end
+    </ul>
+%else:
+    <p>Trenutno ni razpoložljivih turnirjev.</p>
+%end
+
 </body>
 </html>

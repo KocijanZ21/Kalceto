@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekme na turnirju</title>
+    <style>
+        /* Zeleni pas z naslovom */
+        .zeleni-pas {
+            background-color: #458347e6; /* Zeleni odtenek */
+            padding: 15px; /* Notranji rob */
+            color: white; /* Barva besedila */
+            font-size: 40px; /* Velikost pisave naslova */
+            font-weight: bold; /* Odebeljeno besedilo */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Senca pod pasom */
+            display: flex; /* Uporaba flexboxa */
+            align-items: center; /* Vertikalna poravnava na sredino */
+            justify-content: flex-start; /* Poravnava vsebine na levo */
+        }
+    </style>
+</head>
+<body>
+    <div class="zeleni-pas">
+        Seznam tekem
+    </div>
+    
+    %if tekme:
+        %for tekma in tekme:
+            <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+                <p><strong>Ime turnirja:</strong> {{tekma.id_turnirja}}</p>
+                <p><strong>Čas tekme:</strong> {{tekma.cas_tekme}}</p>
+                <p><strong>Miza:</strong> {{tekma.miza}}</p>
+                <p><strong>Sodnik</strong> {{tekma.sodnik_tekme}}</p>
+                <p><strong>Prvi igralec:</strong> {{tekma.igralec1}}</p>
+                <p><strong>Drugi igralec:</strong> {{tekma.igralec2}}</p>
+                <p><strong>Zmagovalec:</strong> {{tekma.izid or 'Še ni znan'}}</p>
+            </div>
+        %end
+    %else:
+        <p>Tekme še niso razpisane.</p>
+    %end
+</body>
+</html>
+ 
