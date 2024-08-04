@@ -244,16 +244,7 @@ def dodaj_izid():
     # Klic funkcije za posodobitev izida tekme v bazi
     service.posodobi_izid_tekme(tekma_id, zmagovalec)
 
-    redirect('/domov')
-
-   
-
-
-    
-
-
-
-    
+    redirect('/domov')   
     
 
 if __name__ == "__main__":

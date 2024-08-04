@@ -33,12 +33,12 @@
                 <p><strong>Sodnik</strong> {{tekma.sodnik_tekme}}</p>
                 <p><strong>Prvi igralec:</strong> {{tekma.igralec1}}</p>
                 <p><strong>Drugi igralec:</strong> {{tekma.igralec2}}</p>
-                <p><strong>Zmagovalec:</strong> {{tekma.izid or 'Še ni znan'}}</p>
+                <p style="color: green;"><strong>Zmagovalec:</strong> {{tekma.izid or 'Še ni znan'}}</p>
 
                 %if tekma.izid == tekma.igralec1:
                 
                 %elif tekma.izid == tekma.igralec2:
-                
+
                 %else:
                 <form action="/dodaj_izid" method="post">
                     <input type="hidden" name="tekma_id" value="{{tekma.id_tekme}}">
