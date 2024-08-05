@@ -9,21 +9,29 @@ repo = Repo()
 osebe = repo.dobi_prijave_turnir("End of summer tournament") 
 #print(osebe)
 
-en_turnir = repo.dobi_turnir_en("End of summer tournament")
+prejsni_datum = repo.dobi_tekmo_turnir('End of summer tournament')
 
-
-datum_turnirja = [datum.datum_pricetka for datum in en_turnir]
-print(datum_turnirja)
-nov = datum_turnirja[0] + timedelta(days=1)
-print(nov)
 
 
 
 tekma2 = repo.dobi_tekmo_turnir("End of summer tournament")
-print(tekma2)
+
+
 zmagovalci = [zmag.izid for zmag in tekma2]
-print(zmagovalci)
-print(zmagovalci[4:])
+#ali = all(row[1] != '' for row in zmagovalci)
+
+
+krog1 = 2
+
+ali = repo.ali_so_vsi_zmagovalci_vpisani("End of summer tournament", krog1)
+print(ali)
+tekma_krog = repo.dobi_tekmo_krog(krog1)
+
+zmagovalec = repo.dobi_zmagovalca_turnirja("End of summer tournament")
+print(zmagovalec)
+
+
+
 
 
 

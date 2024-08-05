@@ -38,6 +38,14 @@ class Repo:
         """, (id_turnirja,))
         t_en = [turnir.from_dict(t_en) for t_en in self.cur.fetchall()]
         return t_en
+    
+    def posodobi_zmagovalca_turnirja(self, id_turnirja, zmagovalec):
+        self.cur.execute("""
+            UPDATE turnir
+            SET zmagovalec = %s
+            WHERE id_turnirja = %s
+        """, (zmagovalec, id_turnirja))
+        self.conn.commit()
 
 
     def dodaj_turnir(self, t : turnir):
@@ -186,7 +194,7 @@ class Repo:
     
     def dobi_tekmo(self) -> List[tekma]:
         self.cur.execute("""
-            SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2 
+            SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2, krog
             FROM tekma
         """)
         te = [tekma.from_dict(t) for t in self.cur.fetchall()]
@@ -194,18 +202,27 @@ class Repo:
     
     def dobi_tekmo_turnir(self, ime_turnirja : str ) -> List[tekma]:
         self.cur.execute("""
-            SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2
+            SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2, krog
             FROM tekma
             WHERE ime_turnirja = %s
         """, (ime_turnirja,)) 
         ime = [tekma.from_dict(ime) for ime in self.cur.fetchall()]
         return ime
     
+    def dobi_tekmo_krog(self, krog : int ) -> List[tekma]:
+        self.cur.execute("""
+            SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2, krog
+            FROM tekma
+            WHERE krog = %s
+        """, (krog,)) 
+        ime_krog = [tekma.from_dict(ime_krog) for ime_krog in self.cur.fetchall()]
+        return ime_krog
+    
     def dodaj_tekmo(self, tek : tekma):
         self.cur.execute("""
-            INSERT into tekma(cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2 )
-            VALUES(%s, %s, %s, %s, %s, %s, %s)
-        """, (tek.cas, tek.miza, tek.izid, tek.ime_turnirja, tek.sodnik_tekme, tek.igralec1, tek.igralec2))
+            INSERT into tekma(cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2, krog )
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (tek.cas, tek.miza, tek.izid, tek.ime_turnirja, tek.sodnik_tekme, tek.igralec1, tek.igralec2, tek.krog))
         self.conn.commit()
 
     def odstrani_tekmo(self, id_tekme):
@@ -222,3 +239,41 @@ class Repo:
             WHERE id_tekme = %s
         """, (izid, id_tekme))
         self.conn.commit()
+
+    def dobi_trenutni_krog(self, ime_turnirja):
+        self.cur.execute("""
+            SELECT  krog
+            FROM tekma
+            WHERE ime_turnirja = %s
+            Order by cas desc
+        """, (ime_turnirja,)) 
+        zadnji = [tekma.from_dict(zadnji) for zadnji in self.cur.fetchall()]
+        trenutni_krog= [kr.krog for kr in zadnji]
+        return trenutni_krog[0]
+    
+    def dobi_zmagovalci(self, ime_turnirja, krog):
+        self.cur.execute("""
+            SELECT izid 
+            FROM tekma
+            WHERE ime_turnirja = %s AND krog = %s
+        """, (ime_turnirja,krog,)) 
+        zmag = [tekma.from_dict(zmag) for zmag in self.cur.fetchall()]
+        return zmag
+    
+    def ali_so_vsi_zmagovalci_vpisani(self, ime_turnirja, krog):
+        self.cur.execute("""
+            SELECT COUNT(izid) 
+            FROM tekma
+            WHERE ime_turnirja = %s AND krog = %s AND izid = ''
+        """, (ime_turnirja,krog,)) 
+        stevilo = self.cur.fetchone()
+        return stevilo[0]
+
+
+
+
+
+       
+    
+      
+    

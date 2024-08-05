@@ -151,18 +151,25 @@ def tekme(id_turnirja):
     id_turnirja = id_turnirja.replace('%20', ' ')
     en_turnir = service.dobi_turnir_en(id_turnirja)
     vloga = request.get_cookie("vloga")
+    ime_turnirja1 = [ime.id_turnirja for ime in en_turnir]
+    ime_turnirja = ime_turnirja1[0]
     datum_turnirja = [datum.datum_pricetka for datum in en_turnir]
     datum_konca = [dat.datum_konca_prijav for dat in en_turnir]
     datum_konca_prijav = datum_konca[0]
     danasnji_datum = date.today()
+    st_prijavljenih = service.sestej_prijave_turnir(id_turnirja)
+    
+    
 
     if vloga == 'sodnik':
 
-        if service.sestej_prijave_turnir(id_turnirja) == 16:
+        if st_prijavljenih == 16:
             tekme = service.dobi_tekmo_turnir(id_turnirja)
 
             if tekme:
-                return template('tekme_na_turnirju.html', tekme=tekme)
+                prvi_krog = service.dobi_trenutni_krog(id_turnirja)
+                vsi_izidi_vpisani = service.ali_so_vsi_zmagovalci_vpisani(id_turnirja, prvi_krog)
+                return template('tekme_na_turnirju.html', tekme=tekme, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav, vsi_izidi_vpisani = vsi_izidi_vpisani, ime_turnirja = ime_turnirja, st_prijavljenih = st_prijavljenih)
 
             prijavljeni = service.dobi_prijave_turnir(id_turnirja)
             prijavljene_osebe = [oseba.up_ime for oseba in prijavljeni]
@@ -179,6 +186,7 @@ def tekme(id_turnirja):
             zeljena_ura = time(10, 0)
             cas_tekme = datetime.combine(datum_turnirja[0], zeljena_ura)
             miza = 1
+            krog = 1
             izid = ''
             random.shuffle(prijavljene_osebe)
 
@@ -187,21 +195,23 @@ def tekme(id_turnirja):
                 igralec2 = prijavljene_osebe.pop()
                 sodnik_tekme = random.choice(up_ime_sodniki) 
 
-                service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2)    
+                service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2, krog)    
 
                 cas_tekme += timedelta(hours=1)
 
+            prvi_krog = service.dobi_trenutni_krog(id_turnirja)
+            vsi_izidi_vpisani = service.ali_so_vsi_zmagovalci_vpisani(id_turnirja, prvi_krog)
             tekme = service.dobi_tekmo_turnir(id_turnirja)
-            return template('tekme_na_turnirju.html', tekme = tekme, vloga = vloga, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+            return template('tekme_na_turnirju.html', tekme = tekme, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav, vsi_izidi_vpisani = vsi_izidi_vpisani, ime_turnirja = ime_turnirja, st_prijavljenih = st_prijavljenih)
         else:
             tekme = service.dobi_tekmo_turnir(id_turnirja)
-            return template('tekme_na_turnirju.html', tekme = tekme,danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+            return template('tekme_na_turnirju.html', tekme = tekme, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav,  ime_turnirja = ime_turnirja)
     else: 
         if service.sestej_prijave_turnir(id_turnirja) == 16:
             tekme = service.dobi_tekmo_turnir(id_turnirja)
 
             if tekme:
-                return template('tekme_na_turnirju_igralec.html', tekme=tekme)
+                return template('tekme_na_turnirju_igralec.html', tekme=tekme,  st_prijavljenih = st_prijavljenih)
 
             prijavljeni = service.dobi_prijave_turnir(id_turnirja)
             prijavljene_osebe = [oseba.up_ime for oseba in prijavljeni]
@@ -219,6 +229,7 @@ def tekme(id_turnirja):
             cas_tekme = datetime.combine(datum_turnirja[0], zeljena_ura)
             miza = 1
             izid = ''
+            krog = 1
             random.shuffle(prijavljene_osebe)
 
             while len(prijavljene_osebe) > 1:
@@ -226,15 +237,15 @@ def tekme(id_turnirja):
                 igralec2 = prijavljene_osebe.pop()
                 sodnik_tekme = random.choice(up_ime_sodniki) 
 
-                service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2)    
+                service.dodaj_tekmo(cas_tekme, miza, izid, id_turnirja, sodnik_tekme, igralec1, igralec2, krog)    
 
                 cas_tekme += timedelta(hours=1)
-
+            
             tekme = service.dobi_tekmo_turnir(id_turnirja)
-            return template('tekme_na_turnirju_igralec.html', tekme = tekme, vloga = vloga, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+            return template('tekme_na_turnirju_igralec.html', tekme = tekme, vloga = vloga, danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav,  st_prijavljenih = st_prijavljenih)
         else:
             tekme = service.dobi_tekmo_turnir(id_turnirja)
-            return template('tekme_na_turnirju_igralec.html', tekme = tekme,danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav)
+            return template('tekme_na_turnirju_igralec.html', tekme = tekme,danasnji_datum = danasnji_datum, datum_konca_prijav = datum_konca_prijav, st_prijavljenih = st_prijavljenih)
 
 @post('/dodaj_izid')
 def dodaj_izid():
@@ -245,6 +256,56 @@ def dodaj_izid():
     service.posodobi_izid_tekme(tekma_id, zmagovalec)
 
     redirect('/domov')   
+
+@get('/nov_krog/<id_turnirja>')
+def nov_krog(id_turnirja):
+    ime_turnirja = id_turnirja
+    vsi_sodniki = auth.dobi_vse_sodnike()
+    emso_sodnik = [sodni.emso for sodni in vsi_sodniki]
+    sodniki_uporab = []
+    for st in emso_sodnik:
+        sodnik2 = auth.dobi_uporabnika_emso(st)
+        sodniki_uporab.append(sodnik2)
+    sodniki_uporab    
+    uporab_ime_sodniki = [up_imena.username for up_imena in sodniki_uporab]
+    
+   
+    # Pridobitev trenutnega kroga in zmagovalcev
+    zadnji_krog = service.dobi_trenutni_krog(id_turnirja)
+    
+    
+    cas_tekme = service.dobi_tekmo_krog(zadnji_krog)
+    datum = datetime.strptime(cas_tekme, '%Y-%m-%d %H:%M:%S')
+    
+
+    zmagovalci_vse = service.dobi_zmagovalci(id_turnirja, zadnji_krog)
+    zmagovalci = [zmagov.izid for zmagov in zmagovalci_vse]
+    st_prijavljenih =  len(zmagovalci)
+  
+   
+
+    # Določimo nov krog
+    nov_krog = zadnji_krog + 1
+
+    vsi_izidi_vpisani = service.ali_so_vsi_zmagovalci_vpisani(id_turnirja, nov_krog)
+   
+    ali_so_tekme = service.ali_tekmo_krog_je(nov_krog)
+    
+    if ali_so_tekme:
+        tekme = service.dobi_tekmo_krog_je(nov_krog)
+        return template('tekme_na_turnirju.html', tekme=tekme, ime_turnirja = ime_turnirja, vsi_izidi_vpisani = vsi_izidi_vpisani, st_prijavljenih = st_prijavljenih)
+    else:
+        # Glede na število zmagovalcev prilagodimo koliko jih naj vnesemo
+        if  len(zmagovalci) == 1:
+            zmagovalec_turnirja = zmagovalci[0]
+            service.posodobi_zmagovalca_turnirja(id_turnirja, zmagovalec_turnirja)
+            return template("zmagovalec.html", zmagovalec_turnirja = zmagovalec_turnirja)
+        else:
+            service.ustvari_nov_krog(zmagovalci, id_turnirja, datum, nov_krog, uporab_ime_sodniki)
+            tekme = service.dobi_tekmo_krog_je(nov_krog)
+        return template('tekme_na_turnirju.html', tekme = tekme, vsi_izidi_vpisani = vsi_izidi_vpisani, ime_turnirja = ime_turnirja, st_prijavljenih = st_prijavljenih)
+
+    
     
 
 if __name__ == "__main__":

@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tekme na turnirju</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 40xp;
+            padding: 0;
+            background-color: white;
+        }
         /* Zeleni pas z naslovom */
         .zeleni-pas {
             background-color: #458347e6; /* Zeleni odtenek */
@@ -17,16 +24,22 @@
             align-items: center; /* Vertikalna poravnava na sredino */
             justify-content: flex-start; /* Poravnava vsebine na levo */
         }
-        .button-container {
+        .winner-container {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column; /* Poravnava gumbov navpično */
-            gap: 10px; /* Razdalja med gumbi */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centriranje */
+            text-align: center;
         }
-
-        .button {
+        .winner {
+            font-size: 100px; /* Velika velikost pisave za ime zmagovalca */
+            font-weight: bold;
+            color: black; /* Barva besedila */
+        }
+        .home-button {
+            position: absolute;
+            top: 20px; /* Razdalja od vrha strani */
+            right: 20px; /* Razdalja od leve strani */
             background-color: #458347e6; /* Zeleni odtenek */
             color: white; /* Barva besedila */
             border: none;
@@ -34,46 +47,28 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            text-align: center;
         }
 
-        .button a {
+        .home-button a {
             color: white; /* Barva besedila znotraj gumba */
             text-decoration: none; /* Odstrani podčrtano */
         }
 
-        .button:hover {
+        .home-button:hover {
             background-color: #366c3d; /* Temnejši zeleni odtenek ob hoverju */
         }
     </style>
 </head>
 <body>
     <div class="zeleni-pas">
-        Seznam tekem
+        Zmagovalec turnirja
+    </div>
+    <button class="home-button"><a href="/domov">Domov</a></button>
+    <div class="winner-container">
+        <div class="winner">
+            {{zmagovalec_turnirja}}
+        </div>
     </div>
     
-    %if tekme:
-        %for tekma in tekme:
-            <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
-                <p><strong>Ime turnirja:</strong> {{tekma.ime_turnirja}}</p>
-                <p><strong>Čas tekme:</strong> {{tekma.cas}}</p>
-                <p><strong>Miza:</strong> {{tekma.miza}}</p>
-                <p><strong>Sodnik</strong> {{tekma.sodnik_tekme}}</p>
-                <p><strong>Prvi igralec:</strong> {{tekma.igralec1}}</p>
-                <p><strong>Drugi igralec:</strong> {{tekma.igralec2}}</p>
-                <p style="color: green;"><strong>Zmagovalec:</strong> {{tekma.izid or 'Še ni znan'}}</p>
-              
-            </div>
-        %end
-        <div class="button-container">
-            <button class="button"><a href="/turnirji">Zmagovalec</a></button>
-        </div>
-
-    %elif danasnji_datum < datum_konca_prijav:
-        <p>Tekme še niso razpisane.</p>
-            
-    %else:
-        <p>Na turnir se je prijavilo premalo oseb, zato se nebo izvedel.</p>
-    %end
 </body>
 </html>

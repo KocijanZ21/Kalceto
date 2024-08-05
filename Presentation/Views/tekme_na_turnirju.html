@@ -54,12 +54,32 @@
 
             </div>
         %end
+        % if vsi_izidi_vpisani == 0:
+            %if st_prijavljenih == 2:
+            <div style="text-align: center; margin-top: 20px;">
+                <form action="/nov_krog/{{ime_turnirja}}" method="get">
+                    <button type="submit">Ogled zmagovalca</button>
+                </form>
+            </div>
+            %else:
+            <div style="text-align: center; margin-top: 20px;">
+                <form action="/nov_krog/{{ime_turnirja}}" method="get">
+                    <button type="submit">Začni nov krog</button>
+                </form>
+            </div>
+            %end
+        % else:
+        <p style="text-align: center; margin-top: 20px;">Vse tekme trenutnega kroga še niso zaključene. Gumb za začetek novega kroga bo na voljo, ko bodo vsi izidi vpisani.</p>
+        % end
+    
     %elif danasnji_datum < datum_konca_prijav:
         <p>Tekme še niso razpisane.</p>
             
     %else:
         <p>Na turnir se je prijavilo premalo oseb, zato se nebo izvedel.</p>
     %end
+
+   
 </body>
 </html>
  

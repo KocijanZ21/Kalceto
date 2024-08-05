@@ -70,6 +70,7 @@ class tekma:
     sodnik_tekme : str=field(default="")
     igralec1 : str=field(default="")
     igralec2 : str=field(default="")
+    krog : int = field(default=1)
 
 @dataclass_json
 @dataclass
