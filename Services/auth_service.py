@@ -10,48 +10,6 @@ class AuthService:
     def __init__(self):
          self.repo = Repo()
 
-
-    """def zakodiraj_sumnik(self, besedilo : str) -> str:
-        sumniki = {'š': 's-','č': 'c-','ž' : 'z-'}
-        besedilo2 = ''
-        for crka in besedilo:
-            if crka.lower() in sumniki.keys():
-                for sumnik in sumniki.keys():
-                    if sumnik == crka.lower():
-                        if crka.isupper():
-                            besedilo2 += sumniki[sumnik][0].upper() +'-'  
-                        else:  
-                            besedilo2 += sumniki[sumnik]
-            else:
-                besedilo2 += crka
-        return besedilo2
-            
-    def odkodiraj_sumnik(self, besedilo : str) -> str:
-        besedilo2 = ''
-        for i in range(len(besedilo)):
-            if besedilo[i] == '-':
-                prejsna = besedilo[i-1]
-                besedilo2 = besedilo2[ : -1]
-                match(prejsna.lower()):
-                    case 'z':
-                        if prejsna.isupper():
-                            besedilo2 += 'ž'.upper() 
-                        else:
-                            besedilo2 += 'ž'
-                    case 's':
-                        if prejsna.isupper():
-                            besedilo2 += 'š'.upper() 
-                        else:
-                            besedilo2 += 'š'
-                    case 'c':
-                        if prejsna.isupper():
-                            besedilo2 += 'č'.upper() 
-                        else:
-                            besedilo2 += 'č'   
-            else:
-                besedilo2 += besedilo[i]
-        return besedilo2"""
-
     def obstaja_uporabnik(self, uporabnik: str) -> bool:
         try:
             user = self.repo.dobi_uporabnika(uporabnik)
