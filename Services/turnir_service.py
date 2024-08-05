@@ -122,18 +122,18 @@ class TurnirService:
        stevilo1 = self.repo.ali_so_vsi_zmagovalci_vpisani(ime_turnirja, krog)
        return stevilo1
     
-    def dobi_tekmo_krog(self, krog : int ):
-       tekma = self.repo.dobi_tekmo_krog(krog)
+    def dobi_tekmo_krog(self, ime_turnirja: str, krog : int ):
+       tekma = self.repo.dobi_tekmo_krog(ime_turnirja, krog)
        tekmacas = [cas_tekme.cas for cas_tekme in tekma]
        tekma_cas = tekmacas[0]
        return tekma_cas
     
-    def dobi_tekmo_krog_je(self, krog: int):
-     tekme = self.repo.dobi_tekmo_krog(krog)
+    def dobi_tekmo_krog_je(self, ime_turnirja: str, krog: int):
+     tekme = self.repo.dobi_tekmo_krog( ime_turnirja, krog)
      return tekme
     
-    def ali_tekmo_krog_je(self, krog: int):
-      if self.repo.dobi_tekmo_krog(krog):
+    def ali_tekmo_krog_je(self, ime_turnirja: str, krog: int):
+      if self.repo.dobi_tekmo_krog(ime_turnirja, krog):
          return True
       else:
          return False

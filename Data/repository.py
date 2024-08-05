@@ -209,12 +209,12 @@ class Repo:
         ime = [tekma.from_dict(ime) for ime in self.cur.fetchall()]
         return ime
     
-    def dobi_tekmo_krog(self, krog : int ) -> List[tekma]:
+    def dobi_tekmo_krog(self, ime_turnija: str, krog : int ) -> List[tekma]:
         self.cur.execute("""
             SELECT id_tekme, cas, miza, izid, ime_turnirja, sodnik_tekme, igralec1, igralec2, krog
             FROM tekma
-            WHERE krog = %s
-        """, (krog,)) 
+            WHERE krog = %s AND ime_turnirja = %s
+        """, (krog,ime_turnija)) 
         ime_krog = [tekma.from_dict(ime_krog) for ime_krog in self.cur.fetchall()]
         return ime_krog
     

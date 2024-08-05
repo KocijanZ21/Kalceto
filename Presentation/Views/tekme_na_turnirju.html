@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tekme na turnirju</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 40xp;
+            padding: 0;
+            background-color: white;
+        }
         /* Zeleni pas z naslovom */
         .zeleni-pas {
             background-color: #458347e6; /* Zeleni odtenek */
@@ -17,14 +24,54 @@
             align-items: center; /* Vertikalna poravnava na sredino */
             justify-content: flex-start; /* Poravnava vsebine na levo */
         }
+        .winner-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centriranje */
+            text-align: center;
+        }
+        .winner {
+            font-size: 50px; /* Velika velikost pisave za ime zmagovalca */
+            font-weight: bold;
+            color: black; /* Barva besedila */
+        }
+        .home-button {
+            position: center;
+            background-color: #458347e6; /* Zeleni odtenek */
+            color: white; /* Barva besedila */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .home-button a {
+            color: white; /* Barva besedila znotraj gumba */
+            text-decoration: none; /* Odstrani podčrtano */
+        }
+
+        .home-button:hover {
+            background-color: #366c3d; /* Temnejši zeleni odtenek ob hoverju */
+        }
+        .box {
+            border: 2px solid #458347; /* Barva robov */
+            padding: 20px; /* Notranji rob */
+            margin: 10px; /* Zunanji rob */
+            background-color: #f0f0f0; /* Barva ozadja */
+            border-radius: 8px; /* Zaobljeni robovi */
+            width: 300px; /* Širina boxa */
+            height: auto; /* Samodejna višina */
+        }
     </style>
 </head>
 <body>
-    <div class="zeleni-pas">
-        Seznam tekem
-    </div>
     
-    %if tekme:
+    %if tekme and st_prijavljenih > 1:
+        <div class="zeleni-pas">
+            Seznam tekem
+        </div>
         %for tekma in tekme:
             <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
                 <p><strong>Ime turnirja:</strong> {{tekma.ime_turnirja}}</p>
@@ -54,28 +101,41 @@
 
             </div>
         %end
-        % if vsi_izidi_vpisani == 0:
-            %if st_prijavljenih == 2:
-            <div style="text-align: center; margin-top: 20px;">
-                <form action="/nov_krog/{{ime_turnirja}}" method="get">
-                    <button type="submit">Ogled zmagovalca</button>
-                </form>
-            </div>
-            %else:
-            <div style="text-align: center; margin-top: 20px;">
-                <form action="/nov_krog/{{ime_turnirja}}" method="get">
-                    <button type="submit">Začni nov krog</button>
-                </form>
-            </div>
-            %end
+        %if vsi_izidi_vpisani == 0: 
+        <div style="text-align: center; margin-top: 20px;">
+            <form action="/nov_krog/{{ime_turnirja}}" method="get">
+                <button type="submit">Začni nov krog</button>
+            </form>
+        </div>
         % else:
         <p style="text-align: center; margin-top: 20px;">Vse tekme trenutnega kroga še niso zaključene. Gumb za začetek novega kroga bo na voljo, ko bodo vsi izidi vpisani.</p>
         % end
-    
+
+    %elif tekme and st_prijavljenih == 1:
+        <div class="zeleni-pas">
+            Sporočilo
+        </div>
+        <div class="winner-container">
+            <div class="winner">
+                <p>Zmagovalec turnirja je znan.</p> 
+                <div style="text-align: center; margin-top: 20px;">
+                    <form action="/turnirji" method="get">
+                        <button class="home-button" type="submit">Ogled zmagovalca</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     %elif danasnji_datum < datum_konca_prijav:
+        <div class="zeleni-pas">
+            Seznam tekem
+        </div>
         <p>Tekme še niso razpisane.</p>
             
     %else:
+        <div class="zeleni-pas">
+            Seznam tekem
+        </div>
         <p>Na turnir se je prijavilo premalo oseb, zato se nebo izvedel.</p>
     %end
 

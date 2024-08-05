@@ -259,7 +259,9 @@ def dodaj_izid():
 
 @get('/nov_krog/<id_turnirja>')
 def nov_krog(id_turnirja):
+    print(id_turnirja)
     ime_turnirja = id_turnirja
+    print(ime_turnirja)
     vsi_sodniki = auth.dobi_vse_sodnike()
     emso_sodnik = [sodni.emso for sodni in vsi_sodniki]
     sodniki_uporab = []
@@ -272,9 +274,10 @@ def nov_krog(id_turnirja):
    
     # Pridobitev trenutnega kroga in zmagovalcev
     zadnji_krog = service.dobi_trenutni_krog(id_turnirja)
+    print(zadnji_krog)
     
     
-    cas_tekme = service.dobi_tekmo_krog(zadnji_krog)
+    cas_tekme = service.dobi_tekmo_krog(ime_turnirja, zadnji_krog)
     datum = datetime.strptime(cas_tekme, '%Y-%m-%d %H:%M:%S')
     
 
@@ -282,27 +285,28 @@ def nov_krog(id_turnirja):
     zmagovalci = [zmagov.izid for zmagov in zmagovalci_vse]
     st_prijavljenih =  len(zmagovalci)
   
-   
+    print(zmagovalci)
 
     # Določimo nov krog
     nov_krog = zadnji_krog + 1
 
     vsi_izidi_vpisani = service.ali_so_vsi_zmagovalci_vpisani(id_turnirja, nov_krog)
    
-    ali_so_tekme = service.ali_tekmo_krog_je(nov_krog)
+    ali_so_tekme = service.ali_tekmo_krog_je(ime_turnirja, nov_krog)
     
     if ali_so_tekme:
-        tekme = service.dobi_tekmo_krog_je(nov_krog)
+        tekme = service.dobi_tekmo_krog_je(ime_turnirja,nov_krog)
         return template('tekme_na_turnirju.html', tekme=tekme, ime_turnirja = ime_turnirja, vsi_izidi_vpisani = vsi_izidi_vpisani, st_prijavljenih = st_prijavljenih)
     else:
         # Glede na število zmagovalcev prilagodimo koliko jih naj vnesemo
         if  len(zmagovalci) == 1:
             zmagovalec_turnirja = zmagovalci[0]
             service.posodobi_zmagovalca_turnirja(id_turnirja, zmagovalec_turnirja)
-            return template("zmagovalec.html", zmagovalec_turnirja = zmagovalec_turnirja)
+            tekme = service.dobi_tekmo_turnir(ime_turnirja)
+            return template('tekme_na_turnirju.html',tekme = tekme, zmagovalec_turnirja = zmagovalec_turnirja, st_prijavljenih = st_prijavljenih)
         else:
             service.ustvari_nov_krog(zmagovalci, id_turnirja, datum, nov_krog, uporab_ime_sodniki)
-            tekme = service.dobi_tekmo_krog_je(nov_krog)
+            tekme = service.dobi_tekmo_krog_je(ime_turnirja, nov_krog)
         return template('tekme_na_turnirju.html', tekme = tekme, vsi_izidi_vpisani = vsi_izidi_vpisani, ime_turnirja = ime_turnirja, st_prijavljenih = st_prijavljenih)
 
     
