@@ -37,7 +37,7 @@ class AuthService:
 
     def dodaj_uporabnika(self, uporabnik: str, rola: str, emso: str, geslo: str) -> UporabnikDto:
 
-        # zgradimo hash za geslo od uporabnika
+       # zgradimo hash za geslo od uporabnika
        # Najprej geslo zakodiramo kot seznam bajtov
         bytes = geslo.encode('utf-8')
   
