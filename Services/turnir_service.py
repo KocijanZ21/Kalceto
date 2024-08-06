@@ -6,7 +6,7 @@ from datetime import timedelta
 import random
 
 
-# V tej datoteki bomo definirali razred za obdelavo in delo s transakcijami
+# V tej datoteki bomo definirali razred za obdelavo in delo s turnirji in tekmami
 
 class TurnirService:
     def __init__(self) -> None:

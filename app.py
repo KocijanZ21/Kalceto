@@ -11,7 +11,6 @@ import random
 
 # Ustvarimo instance servisov, ki jih potrebujemo. 
 # Če je število servisov veliko, potem je service bolj smiselno inicializirati v metodi in na
-# začetku datoteke (saj ne rabimo vseh servisov v vseh metodah!)
 
 
 auth = AuthService()
