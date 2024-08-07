@@ -126,6 +126,7 @@ def domov():
 @get('/turnirji')
 def turnir():
     uporabnik = request.get_cookie("uporabnik").encode('latin1').decode('utf-8')
+    vloga = request.get_cookie("vloga")
     turnirji = service.dobi_turnir()
     danasnji_datum = date.today()
     st_vseh = []
@@ -133,8 +134,11 @@ def turnir():
         st_oseb = service.sestej_prijave_turnir(t.id_turnirja)
         print(st_oseb)
         st_vseh.append(st_oseb)
-    turnir_st = zip(turnirji, st_vseh)    
-    return template_user('turnirji.html', turnirji = turnir_st, danasnji_datum = danasnji_datum)
+    turnir_st = zip(turnirji, st_vseh)  
+    if vloga == 'sodnik':
+        return template_user('turnirji_sodniki.html', turnirji = turnir_st, danasnji_datum = danasnji_datum)
+    else:
+        return template_user('turnirji.html', turnirji = turnir_st, danasnji_datum = danasnji_datum)
 
 @post('/prijava_na_turnir/<id_turnirja>')
 def prijavi_se_na_turnir(id_turnirja):
