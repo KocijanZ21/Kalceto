@@ -94,7 +94,18 @@ def prijava_post():
         redirect(url('/domov'))
 
     else:
-        return template("prijava_up.html", uporabnik=None, rola=None, error="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
+        return template("prijava_up.html", uporabnik=None, vloga=None, error="Neuspešna prijava. Napačno geslo ali uporabniško ime.")
+    
+@get('/odjava')
+def odjava():
+    """
+    Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
+    """
+    
+    response.delete_cookie("uporabnik")
+    response.delete_cookie("vloga")
+    
+    return template('zacetna_stran.html', uporabnik=None, vloga=None, error=None)
 
 @get('/domov')
 def domov():

@@ -8,18 +8,31 @@
         body{
             font-size: 20px;
         }
-          /* Zeleni pas z naslovom */
-        .zeleni-pas {
-            background-color: #458347e6; /* Zeleni odtenek */
-            padding: 15px; /* Notranji rob */
-            color: white; /* Barva besedila */
-            font-size: 40px; /* Velikost pisave naslova */
-            font-weight: bold; /* Odebeljeno besedilo */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Senca pod pasom */
-            display: flex; /* Uporaba flexboxa */
-            align-items: center; /* Vertikalna poravnava na sredino */
-            justify-content: flex-start; /* Poravnava vsebine na levo */
+        .navbar {
+            background-color: #458347e6; /* Zelena barva */
+            overflow: hidden;
+            padding: 14px 16px;
+            align-items: center;
+            display: flex;
         }
+    
+        .nav-title {
+            font-size: 40px;
+            font-weight: bold; /* Odebeljeno besedilo */
+            color: white;
+            margin-right: auto; /* To premakne naslov do leve */
+        }
+        .nav-link {
+             color: white;
+             text-decoration: none;
+             font-size: 18px;
+             margin-left: auto; /* To premakne naslov do leve */
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+       
         li{
             text-align: left;
         }
@@ -37,8 +50,9 @@
     </style>
 </head>
 <body>
-    <div class="zeleni-pas">
-        Ogled tekem na posameznem turnirju
+    <div class="navbar">
+        <div class="nav-title">Ogled tekem na posameznem turnirju</div>
+        <a href="/domov" class="nav-link">Domov</a>
     </div>
 %if turnirji:
     <ul>

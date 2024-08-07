@@ -5,17 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tekme na turnirju</title>
     <style>
-        /* Zeleni pas z naslovom */
-        .zeleni-pas {
-            background-color: #458347e6; /* Zeleni odtenek */
-            padding: 15px; /* Notranji rob */
-            color: white; /* Barva besedila */
-            font-size: 40px; /* Velikost pisave naslova */
+        .navbar {
+            background-color: #458347e6; /* Zelena barva */
+            overflow: hidden;
+            padding: 14px 16px;
+            align-items: center;
+            display: flex;
+            margin-top: auto;
+            z-index: 1000;
+        }
+    
+        .nav-title {
+            font-size: 40px;
             font-weight: bold; /* Odebeljeno besedilo */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Senca pod pasom */
-            display: flex; /* Uporaba flexboxa */
-            align-items: center; /* Vertikalna poravnava na sredino */
-            justify-content: flex-start; /* Poravnava vsebine na levo */
+            color: white;
+            margin-right: auto; /* To premakne naslov do leve */
+        }
+        .nav-link {
+             color: white;
+             text-decoration: none;
+             font-size: 18px;
+             margin-left: auto; /* To premakne naslov do leve */
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .nav-links {
+            display: flex; /* Uporabi Flexbox za horizontalno poravnavo povezav */
+            gap: 15px; /* Dodaj razmik med povezavami */
         }
         .button-container {
             position: absolute;
@@ -48,11 +66,14 @@
     </style>
 </head>
 <body>
-    <div class="zeleni-pas">
-        Seznam tekem
-    </div>
-    
     %if tekme:
+    <div class="navbar">
+        <div class="nav-title">Seznam tekem</div>
+        <div class="nav-links">
+            <a href="/turnirji" class="nav-link">Zmagovalec</a>
+            <a href="/domov" class="nav-link">Domov</a>
+        </div>
+    </div>
         %for tekma in tekme:
             <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
                 <p><strong>Ime turnirja:</strong> {{tekma.ime_turnirja}}</p>
@@ -65,14 +86,19 @@
               
             </div>
         %end
-        <div class="button-container">
-            <button class="button"><a href="/turnirji">Zmagovalec</a></button>
-        </div>
-
+        
     %elif danasnji_datum < datum_konca_prijav:
+        <div class="navbar">
+            <div class="nav-title">Seznam tekem</div>
+            <a href="/domov" class="nav-link">Domov</a>
+        </div>
         <p>Tekme še niso razpisane.</p>
             
     %else:
+        <div class="navbar">
+            <div class="nav-title">Seznam tekem</div>
+            <a href="/domov" class="nav-link">Domov</a>
+        </div>
         <p>Na turnir se je prijavilo premalo oseb, zato se nebo izvedel.</p>
     %end
 </body>

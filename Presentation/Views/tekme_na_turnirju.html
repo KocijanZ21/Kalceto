@@ -6,23 +6,35 @@
     <title>Tekme na turnirju</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 20px;
             font-size: 40xp;
             padding: 0;
             background-color: white;
         }
-        /* Zeleni pas z naslovom */
-        .zeleni-pas {
-            background-color: #458347e6; /* Zeleni odtenek */
-            padding: 15px; /* Notranji rob */
-            color: white; /* Barva besedila */
-            font-size: 40px; /* Velikost pisave naslova */
+        
+        .navbar {
+            background-color: #458347e6; /* Zelena barva */
+            overflow: hidden;
+            padding: 14px 16px;
+            align-items: center;
+            display: flex;
+        }
+    
+        .nav-title {
+            font-size: 40px;
             font-weight: bold; /* Odebeljeno besedilo */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Senca pod pasom */
-            display: flex; /* Uporaba flexboxa */
-            align-items: center; /* Vertikalna poravnava na sredino */
-            justify-content: flex-start; /* Poravnava vsebine na levo */
+            color: white;
+            margin-right: auto; /* To premakne naslov do leve */
+        }
+        .nav-link {
+             color: white;
+             text-decoration: none;
+             font-size: 18px;
+             margin-left: auto; /* To premakne naslov do leve */
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
         }
         .winner-container {
             position: absolute;
@@ -69,9 +81,11 @@
 <body>
     
     %if tekme and st_prijavljenih > 1:
-        <div class="zeleni-pas">
-            Seznam tekem
+        <div class="navbar">
+            <div class="nav-title">Seznam tekem</div>
+            <a href="/domov" class="nav-link">Domov</a>
         </div>
+       
         %for tekma in tekme:
             <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
                 <p><strong>Ime turnirja:</strong> {{tekma.ime_turnirja}}</p>
@@ -112,8 +126,9 @@
         % end
 
     %elif tekme and st_prijavljenih == 1:
-        <div class="zeleni-pas">
-            Sporočilo
+        <div class="navbar">
+            <div class="nav-title">Sporočilo</div>
+            <a href="/domov" class="nav-link">Domov</a>
         </div>
         <div class="winner-container">
             <div class="winner">
@@ -127,14 +142,16 @@
         </div>
 
     %elif danasnji_datum < datum_konca_prijav:
-        <div class="zeleni-pas">
-            Seznam tekem
+        <div class="navbar">
+            <div class="nav-title">Seznam tekem</div>
+            <a href="/domov" class="nav-link">Domov</a>
         </div>
         <p>Tekme še niso razpisane.</p>
             
     %else:
-        <div class="zeleni-pas">
-            Seznam tekem
+        <div class="navbar">
+            <div class="nav-title">Seznam tekem</div>
+            <a href="/domov" class="nav-link">Domov</a>
         </div>
         <p>Na turnir se je prijavilo premalo oseb, zato se nebo izvedel.</p>
     %end
