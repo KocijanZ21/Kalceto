@@ -72,6 +72,9 @@ INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mes
 INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec) VALUES ('End of winter tournament', 'Ljubljana', '25.12.2024', '15.12.2024', '16', '');
 
 INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec) VALUES ('Fall tournament', 'Celje', '30.9.2024', '20.12.2024', '16', '');
+
+INSERT INTO turnir(id_turnirja, kraj, datum_pricetka, datum_konca_prijav, st_mest, zmagovalec) VALUES ('Summer tournament', 'Maribor', '30.8.2024', '20.8.2024', '16', '');
+
 GRANT ALL ON ALL TABLES IN SCHEMA public TO zivak;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO zivak;
 
